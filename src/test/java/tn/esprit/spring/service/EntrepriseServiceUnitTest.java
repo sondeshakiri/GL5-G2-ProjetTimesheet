@@ -26,14 +26,17 @@ public class EntrepriseServiceUnitTest {
 
     @Test
     public void testAddEntrepriseWithMock() {
+        // Prepare the entreprise entity to be added
         Entreprise entreprise = new Entreprise("Tech Solutions", "Business Park");
 
-        // Mock the repository behavior when save method is called
+        // Mock the repository behavior to return the entreprise with a fixed id
+        entreprise.setId(1);  // Assuming a fixed ID for testing
         when(entrepriseRepository.save(any(Entreprise.class))).thenReturn(entreprise);
 
+        // Execute the method under test
         int entrepriseId = entrepriseService.ajouterEntreprise(entreprise);
 
-        // Assuming entrepriseService.ajouterEntreprise returns a fixed id, let's say 1
+        // Verify that the returned ID matches the expected mocked value
         assertEquals(1, entrepriseId);  // Verify the expected behavior
     }
 }
