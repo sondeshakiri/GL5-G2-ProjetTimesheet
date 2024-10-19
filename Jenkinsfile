@@ -1,7 +1,7 @@
 pipeline {
 
     environment {
-        registry = "msaidc/testdevops"
+        registry = "msaidc/timesheet"
         registryCredential = 'dockerCred'
         dockerImage = ''
     }
