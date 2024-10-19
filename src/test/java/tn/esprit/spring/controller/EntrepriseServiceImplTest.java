@@ -2,18 +2,17 @@ package tn.esprit.spring.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEntrepriseService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@ExtendWith(SpringExtension.class)@SpringBootTest
 @Slf4j
 public class EntrepriseServiceImplTest {
 

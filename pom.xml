@@ -52,6 +52,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -175,6 +181,23 @@
 			</build>
 		</profile>
 
-
+		<profile>
+			<id>sonar</id>
+			<properties>
+				<sonar.host.url>http://sonarqube:9000</sonar.host.url>
+				<sonar.login>${sonar.login}</sonar.login>
+				<sonar.password>${sonar.password}</sonar.password>
+			</properties>
+			<build>
+				<plugins>
+					<!-- SonarQube Plugin -->
+					<plugin>
+						<groupId>org.sonarsource.scanner.maven</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>3.9.1.2184</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>

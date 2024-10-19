@@ -2,10 +2,10 @@ package tn.esprit.spring.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.EntrepriseServiceImpl;
 import tn.esprit.spring.services.IEntrepriseService;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @Slf4j
 public class EntrepriseServiceUnitTest {
 
