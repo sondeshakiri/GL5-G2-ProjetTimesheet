@@ -19,14 +19,14 @@ pipeline {
 
         stage('MVN CLEAN') {
             steps {
-                sh 'mvn clean'
+                sh 'mvn clean -DargLine="--add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"'
             }
         }
 
         stage('ARTIFACT CONSTRUCTION') {
             steps {
                 echo 'ARTIFACT CONSTRUCTION...'
-                sh 'mvn package -Dmaven.test.skip=true -P test-coverage'
+                sh 'mvn package -Dmaven.test.skip=true'
             }
         }
 
