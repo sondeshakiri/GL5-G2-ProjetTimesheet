@@ -42,6 +42,7 @@ pipeline {
                 sh """
                                 mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062." \
                                 -Dsonar.java.coveragePlugin=jacoco \
+                                -Dsonar.jacoco.reportPaths=target/jacoco.exec \
                                 -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                             """
                 sh ''
