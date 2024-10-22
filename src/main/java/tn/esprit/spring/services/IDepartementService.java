@@ -1,6 +1,5 @@
 package tn.esprit.spring.services;
 
-import org.springframework.stereotype.Service;
 import tn.esprit.spring.entities.Departement;
 
 import java.util.List;
