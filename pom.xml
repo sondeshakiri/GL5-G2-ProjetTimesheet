@@ -176,14 +176,16 @@
 						<artifactId>jacoco-maven-plugin</artifactId>
 						<version>0.8.12</version>
 						<executions>
+							<!-- This attaches Jacoco agent to the maven test phase to capture the coverage data -->
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
 								</goals>
 							</execution>
+							<!-- This creates the coverage report after tests have run -->
 							<execution>
 								<id>report</id>
-								<phase>test</phase>
+								<phase>verify</phase> <!-- Changing to 'verify' to ensure full test run -->
 								<goals>
 									<goal>report</goal>
 								</goals>
