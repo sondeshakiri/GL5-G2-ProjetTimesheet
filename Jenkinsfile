@@ -26,7 +26,7 @@ pipeline {
         stage('ARTIFACT CONSTRUCTION') {
             steps {
                 echo 'ARTIFACT CONSTRUCTION...'
-                sh 'mvn package -Dmaven.test.skip=true'
+                sh 'mvn package'
             }
         }
 
@@ -42,8 +42,8 @@ pipeline {
                 sh """
                                 mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062." \
                                 -Dsonar.java.coveragePlugin=jacoco \
-                                -Dsonar.jacoco.reportPaths=target/jacoco.exec \
-                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+                                -Dsonar.jacoco.reportPaths=target/jacoco.exec
                             """
                 sh ''
             }
