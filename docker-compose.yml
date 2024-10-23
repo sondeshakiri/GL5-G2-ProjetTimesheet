@@ -14,7 +14,7 @@ services:
     networks:
       - timesheet-network
     restart: unless-stopped
-  sma-api:
+  timesheet-api:
     container_name: timesheet-api
     image: meriam209/timesheeet
     ports:
