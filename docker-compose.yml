@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
   timesheet-api:
     container_name: timesheet-api
-    image: meriam209/timesheeet
+    image: meriam209/timesheet
     ports:
       - 8080:8080
     networks:
