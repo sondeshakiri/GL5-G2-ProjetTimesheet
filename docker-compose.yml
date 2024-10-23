@@ -1,0 +1,36 @@
+services:
+  database:
+    container_name: mysql-timesheet
+    image: mysql
+    environment:
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: timesheet2021
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - timesheet-network
+    restart: unless-stopped
+  sma-api:
+    container_name: timesheet-api
+    image: meriam209/timesheeet
+    ports:
+      - 8080:8080
+    networks:
+      - timesheet-network
+
+    depends_on:
+      - database
+
+
+networks:
+   timesheet-network :
+    driver: bridge
+volumes:
+  mysql:
+
+
+

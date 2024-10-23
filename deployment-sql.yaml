@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-deployment
+  labels:
+    app: database_sql_timesheet
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: database_sql_timesheet
+  template:
+    metadata:
+      labels:
+        app: database_sql_timesheet
+    spec:
+      containers:
+        - name: mysql-container
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              value: username
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_DATABASE
+              value: timesheet2021
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootpassword
