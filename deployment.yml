@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: timesheet-container
-          image: msaidc/timesheet:latest
+          image: sondeshakiri320/timesheetproject:latest
           ports:
             - containerPort: 8080
