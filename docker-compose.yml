@@ -15,7 +15,7 @@ services:
       - spring_network
 
   tomcat:
-    image: tomcat:9.0
+    image: sondeshakiri320/timesheetproject:latest  # Reference the built image from the pipeline
     container_name: tomcat
     ports:
       - "8081:8081"  
@@ -28,7 +28,7 @@ services:
     networks:
       - spring_network
     volumes:
-      - ./target/SpringMVC.war:/usr/local/tomcat/webapps/SpringMVC.war  # Assurez-vous que le WAR est généré ici
+      - ./target/SpringMVC.war:/usr/local/tomcat/webapps/SpringMVC.war  
 
 networks:
   spring_network:
