@@ -17,12 +17,12 @@ spec:
           image: mysql:5.7
           env:
             - name: MYSQL_DATABASE
-              value: "timesheet2021"           
+              value: "timesheet2021"
             - name: MYSQL_ROOT_PASSWORD
-              value: ""      
+              value: "My$tr0ngP@ssw0rd!2024"  
             - name: MYSQL_USER
-              value: "root"
+              value: "app_user"              
             - name: MYSQL_PASSWORD
-              value: ""
+              value: "UserP@ssw0rd!2024"     
           ports:
             - containerPort: 3306
