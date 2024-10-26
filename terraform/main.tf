@@ -1,6 +1,9 @@
 provider "aws" {
   region = var.aws_region
 }
+resource "aws_vpc" "my_vpc" {
+  cidr_block = var.vpc_cidr  # Utilisation de la variable pour le CIDR
+}
 
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
