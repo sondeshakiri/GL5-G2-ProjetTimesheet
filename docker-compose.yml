@@ -7,8 +7,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: timesheet2021
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ""
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     networks:
@@ -21,8 +21,8 @@ services:
       - "8082:8081"  
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/timesheet2021
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_DATASOURCE_USERNAME: username
+      SPRING_DATASOURCE_PASSWORD: password
     depends_on:
       - mysql
     networks:
