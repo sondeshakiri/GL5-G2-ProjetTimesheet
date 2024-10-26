@@ -18,11 +18,9 @@ spec:
           env:
             - name: MYSQL_DATABASE
               value: "timesheet2021"
-            - name: MYSQL_ROOT_PASSWORD
-              value: "My$tr0ngP@ssw0rd!2024"  
             - name: MYSQL_USER
-              value: "app_user"              
+              value: "username"              
             - name: MYSQL_PASSWORD
-              value: "UserP@ssw0rd!2024"     
+              value: "password"     
           ports:
             - containerPort: 3306
