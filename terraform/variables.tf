@@ -25,7 +25,7 @@ variable "role_arn" {
 variable "vpc_id" {
   description = "L'ID du VPC pour le cluster EKS"
   type        = string
-  default     = "vpc-0646a0c153a3e0ffk"# Remplacez par votre ID de VPC réel
+  default     = "vpc-0646a0c153a3e0ff5"# Remplacez par votre ID de VPC réel
 }
 
 variable "vpc_cidr" {
