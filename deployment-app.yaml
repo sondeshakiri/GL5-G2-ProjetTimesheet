@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: timesheet-container
-          image: meriam209/timesheet:latest
+          image: meriam209/timesheet:${BUILD_NUMBER}
           ports:
             - containerPort: 8080
