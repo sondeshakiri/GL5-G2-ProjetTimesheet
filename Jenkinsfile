@@ -81,51 +81,58 @@ pipeline {
 
 
         // Terraform stages
-        stage('Terraform Init') {
+stage('Terraform Init') {
             steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: "${awsCredentialsId}",
-                        usernameVariable: 'AWS_ACCESS_KEY_ID',
-                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-                    ),
-                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
-                ]) {
-                    sh 'terraform init -input=false'
+                dir('terraform') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: "${awsCredentialsId}",
+                            usernameVariable: 'AWS_ACCESS_KEY_ID',
+                            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                        ),
+                        string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                    ]) {
+                        sh 'terraform init -input=false'
+                    }
                 }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: "${awsCredentialsId}",
-                        usernameVariable: 'AWS_ACCESS_KEY_ID',
-                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-                    ),
-                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
-                ]) {
-                    sh 'terraform plan -input=false -out=tfplan'
+                dir('terraform') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: "${awsCredentialsId}",
+                            usernameVariable: 'AWS_ACCESS_KEY_ID',
+                            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                        ),
+                        string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                    ]) {
+                        sh 'terraform plan -input=false -out=tfplan'
+                    }
                 }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: "${awsCredentialsId}",
-                        usernameVariable: 'AWS_ACCESS_KEY_ID',
-                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-                    ),
-                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
-                ]) {
-                    sh 'terraform apply -input=false -auto-approve tfplan'
+                dir('terraform') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: "${awsCredentialsId}",
+                            usernameVariable: 'AWS_ACCESS_KEY_ID',
+                            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                        ),
+                        string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                    ]) {
+                        sh 'terraform apply -input=false -auto-approve tfplan'
+                    }
                 }
             }
         }
-stage('Configure AWS CLI') {
+
+        stage('Configure AWS CLI') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -151,6 +158,7 @@ stage('Configure AWS CLI') {
                 }
             }
         }
+
         // Apply Kubernetes Deployment and Service
         stage('Apply Kubernetes Deployment and Service') {
             steps {
