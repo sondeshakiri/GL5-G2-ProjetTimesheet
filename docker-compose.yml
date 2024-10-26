@@ -15,12 +15,12 @@ services:
       - spring_network
 
   tomcat:
-    image: sondeshakiri320/timesheetproject:latest  # Reference the built image from the pipeline
+    image: sondeshakiri320/timesheetproject:latest  
     container_name: tomcat
     ports:
       - "8082:8081"  
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/timesheet2021
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
     depends_on:
