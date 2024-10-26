@@ -18,7 +18,7 @@ services:
     image: sondeshakiri320/timesheetproject:latest  
     container_name: tomcat
     ports:
-      - "8083:8083"  
+      - "8085:8085"  
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/timesheet2021
       SPRING_DATASOURCE_USERNAME: username
