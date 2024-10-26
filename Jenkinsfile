@@ -7,7 +7,7 @@ pipeline {
         awsCredentialsId = 'aws-credentials' // Jenkins AWS credentials ID for Access Key and Secret Key
         awsSessionTokenId = 'aws-session-token' // Jenkins credential ID for AWS Session Token
         awsRegion = 'us-east-1' // Replace with your AWS region
-        eksCluster = 'devops' // Replace with your EKS cluster name
+        eksCluster = 'mykubernetes' // Replace with your EKS cluster name
     }
 
     agent any
@@ -78,14 +78,17 @@ pipeline {
                 }
             }
         }
-
-        stage('Apply Kubernetes Deployment and Service') {
+stage('Configure AWS CLI') {
             steps {
                 withCredentials([
-                    usernamePassword(credentialsId: "${awsCredentialsId}", usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+                    usernamePassword(
+                        credentialsId: "${awsCredentialsId}",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ),
                     string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
                 ]) {
-                    sh """
+                    sh '''
                         #!/bin/bash
                         set -e
 
@@ -97,15 +100,72 @@ pipeline {
 
                         # Update kubeconfig to use EKS cluster
                         aws eks update-kubeconfig --region ${awsRegion} --name ${eksCluster}
-                        kubectl get nodes
-                        kubectl apply -f service.yaml
-                        kubectl apply -f deployment.yaml
-                    """
+                    '''
                 }
             }
         }
-    }
 
+        // Terraform stages
+        stage('Terraform Init') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${awsCredentialsId}",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ),
+                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                ]) {
+                    sh 'terraform init -input=false'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${awsCredentialsId}",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ),
+                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                ]) {
+                    sh 'terraform plan -input=false -out=tfplan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${awsCredentialsId}",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ),
+                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                ]) {
+                    sh 'terraform apply -input=false -auto-approve tfplan'
+                }
+            }
+        }
+
+        // Apply Kubernetes Deployment and Service
+        stage('Apply Kubernetes Deployment and Service') {
+            steps {
+                sh '''
+                    #!/bin/bash
+                    set -e
+
+                    # Apply Kubernetes configurations
+                    kubectl get nodes
+                    kubectl apply -f service.yaml
+                    kubectl apply -f deployment.yaml
+                '''
+            }
+        }
+    }
     post {
         success {
             mail to: 'chaiebsaid.01@gmail.com',
