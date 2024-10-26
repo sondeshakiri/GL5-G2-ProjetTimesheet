@@ -27,7 +27,7 @@ pipeline {
             }
         }
 
-        stage('ARTIFACT CONSTRUCTION') {
+       /* stage('ARTIFACT CONSTRUCTION') {
             steps {
                 echo 'ARTIFACT CONSTRUCTION...'
                 sh 'mvn package'
@@ -77,7 +77,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 stage('Configure AWS CLI') {
             steps {
                 withCredentials([
@@ -166,7 +166,7 @@ stage('Configure AWS CLI') {
             }
         }
     }
-    post {
+   /* post {
         success {
             mail to: 'chaiebsaid.01@gmail.com',
                  subject: "Jenkins Pipeline Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
@@ -176,6 +176,6 @@ stage('Configure AWS CLI') {
             mail to: 'chaiebsaid.01@gmail.com',
                  subject: "Jenkins Pipeline Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                  body: "The Jenkins pipeline ${env.JOB_NAME} has failed.\n\nBuild URL: ${env.BUILD_URL}"
-        }
+        }*/
     }
 }
