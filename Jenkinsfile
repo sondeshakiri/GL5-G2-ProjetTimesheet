@@ -78,32 +78,7 @@ pipeline {
                 }
             }
         }*/
-stage('Configure AWS CLI') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: "${awsCredentialsId}",
-                        usernameVariable: 'AWS_ACCESS_KEY_ID',
-                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-                    ),
-                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
-                ]) {
-                    sh '''
-                        #!/bin/bash
-                        set -e
 
-                        # Configure AWS CLI with credentials
-                        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                        aws configure set aws_session_token $AWS_SESSION_TOKEN
-                        aws configure set default.region ${awsRegion}
-
-                        # Update kubeconfig to use EKS cluster
-                        aws eks update-kubeconfig --region ${awsRegion} --name ${eksCluster}
-                    '''
-                }
-            }
-        }
 
         // Terraform stages
         stage('Terraform Init') {
@@ -150,7 +125,32 @@ stage('Configure AWS CLI') {
                 }
             }
         }
+stage('Configure AWS CLI') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${awsCredentialsId}",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ),
+                    string(credentialsId: "${awsSessionTokenId}", variable: 'AWS_SESSION_TOKEN')
+                ]) {
+                    sh '''
+                        #!/bin/bash
+                        set -e
 
+                        # Configure AWS CLI with credentials
+                        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                        aws configure set aws_session_token $AWS_SESSION_TOKEN
+                        aws configure set default.region ${awsRegion}
+
+                        # Update kubeconfig to use EKS cluster
+                        aws eks update-kubeconfig --region ${awsRegion} --name ${eksCluster}
+                    '''
+                }
+            }
+        }
         // Apply Kubernetes Deployment and Service
         stage('Apply Kubernetes Deployment and Service') {
             steps {
