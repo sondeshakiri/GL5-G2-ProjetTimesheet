@@ -165,7 +165,7 @@ stage('Configure AWS CLI') {
                 '''
             }
         }
-    }
+
    /* post {
         success {
             mail to: 'chaiebsaid.01@gmail.com',
