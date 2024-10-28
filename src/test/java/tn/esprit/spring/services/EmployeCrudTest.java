@@ -2,11 +2,12 @@ package tn.esprit.spring.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.repository.EmployeRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ActiveProfiles("test")
 @SpringBootTest
 public class EmployeCrudTest {
 
