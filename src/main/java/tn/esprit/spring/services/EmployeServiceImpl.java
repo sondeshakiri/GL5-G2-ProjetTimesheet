@@ -2,6 +2,7 @@ package tn.esprit.spring.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,13 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Autowired
 	EmployeRepository employeRepository;
+
 	@Autowired
 	DepartementRepository deptRepoistory;
+
 	@Autowired
 	ContratRepository contratRepoistory;
+
 	@Autowired
 	TimesheetRepository timesheetRepository;
 
@@ -41,34 +45,32 @@ public class EmployeServiceImpl implements IEmployeService {
 		return employe.getId();
 	}
 
+	public Employe getEmployeById(int employeId) {
+		return employeRepository.findById(employeId).orElse(null);
+	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
 		Employe employe = employeRepository.findById(employeId).get();
 		employe.setEmail(email);
 		employeRepository.save(employe);
-
 	}
 
-	@Transactional	
+	@Transactional
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		Departement depManagedEntity = deptRepoistory.findById(depId).get();
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 
-		
-			depManagedEntity.getEmployes().add(employeManagedEntity);
-
-		
-
+		depManagedEntity.getEmployes().add(employeManagedEntity);
 	}
+
 	@Transactional
-	public void desaffecterEmployeDuDepartement(int employeId, int depId)
-	{
+	public void desaffecterEmployeDuDepartement(int employeId, int depId) {
 		Departement dep = deptRepoistory.findById(depId).get();
 		int employeNb = dep.getEmployes().size();
-		for(int index = 0; index < employeNb; index++){
-			if(dep.getEmployes().get(index).getId() == employeId){
+		for (int index = 0; index < employeNb; index++) {
+			if (dep.getEmployes().get(index).getId() == employeId) {
 				dep.getEmployes().remove(index);
-				break;//a revoir
+				break; // a revoir
 			}
 		}
 	}
@@ -84,21 +86,20 @@ public class EmployeServiceImpl implements IEmployeService {
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
-
 	}
 
 	public String getEmployePrenomById(int employeId) {
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 		return employeManagedEntity.getPrenom();
 	}
-	public void deleteEmployeById(int employeId)
-	{
+
+	public void deleteEmployeById(int employeId) {
 		Employe employe = employeRepository.findById(employeId).get();
 
-		//Desaffecter l'employe de tous les departements
-		//c'est le bout master qui permet de mettre a jour
-		//la table d'association
-		for(Departement dep : employe.getDepartements()){
+		// Desaffecter l'employe de tous les departements
+		// c'est le bout master qui permet de mettre a jour
+		// la table d'association
+		for (Departement dep : employe.getDepartements()) {
 			dep.getEmployes().remove(employe);
 		}
 
@@ -108,7 +109,6 @@ public class EmployeServiceImpl implements IEmployeService {
 	public void deleteContratById(int contratId) {
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 		contratRepoistory.delete(contratManagedEntity);
-
 	}
 
 	public int getNombreEmployeJPQL() {
@@ -117,7 +117,6 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	public List<String> getAllEmployeNamesJPQL() {
 		return employeRepository.employeNames();
-
 	}
 
 	public List<Employe> getAllEmployeByEntreprise(Entreprise entreprise) {
@@ -126,8 +125,8 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	public void mettreAjourEmailByEmployeIdJPQL(String email, int employeId) {
 		employeRepository.mettreAjourEmailByEmployeIdJPQL(email, employeId);
-
 	}
+
 	public void deleteAllContratJPQL() {
 		employeRepository.deleteAllContratJPQL();
 	}
@@ -140,13 +139,11 @@ public class EmployeServiceImpl implements IEmployeService {
 		return employeRepository.getSalaireMoyenByDepartementId(departementId);
 	}
 
-	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
-			Date dateFin) {
+	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut, Date dateFin) {
 		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
 	}
 
 	public List<Employe> getAllEmployes() {
 		return (List<Employe>) employeRepository.findAll();
 	}
-
 }

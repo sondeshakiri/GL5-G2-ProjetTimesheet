@@ -1,19 +1,22 @@
 package tn.esprit.spring.services;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EmployeServiceMockitoTest {
 
     @Mock
@@ -24,9 +27,8 @@ public class EmployeServiceMockitoTest {
 
     private Employe employe;
 
-    @BeforeEach
+    @Before
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
         employe = new Employe();
         employe.setId(1);
         employe.setPrenom("John");
@@ -49,7 +51,7 @@ public class EmployeServiceMockitoTest {
     public void testGetEmployeById() {
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
 
-        Employe foundEmploye = employeRepository.findById(1).orElse(null);
+        Employe foundEmploye = employeService.getEmployeById(1); // Fixed the method call to employeService
         assertNotNull(foundEmploye);
         assertEquals("John", foundEmploye.getPrenom());
     }

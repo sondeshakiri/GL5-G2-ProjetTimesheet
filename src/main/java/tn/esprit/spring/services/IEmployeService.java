@@ -9,16 +9,16 @@ import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
 
-
 public interface IEmployeService {
-	
-	public Employe authenticate(String login, String password) ;
+
+	public Employe authenticate(String login, String password);
 	public void mettreAjourEmailByEmployeId(String email, int employeId);
 	public void affecterEmployeADepartement(int employeId, int depId);
 	public void desaffecterEmployeDuDepartement(int employeId, int depId);
 	public int ajouterContrat(Contrat contrat);
 	public void affecterContratAEmploye(int contratId, int employeId);
 	public String getEmployePrenomById(int employeId);
+	public Employe getEmployeById(int employeId);  // Added this line
 	public void deleteEmployeById(int employeId);
 	public void deleteContratById(int contratId);
 	public int getNombreEmployeJPQL();
@@ -29,13 +29,8 @@ public interface IEmployeService {
 	public float getSalaireByEmployeIdJPQL(int employeId);
 	public Double getSalaireMoyenByDepartementId(int departementId);
 	public List<Employe> getAllEmployes();
-	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, 
-	Date dateDebut, Date dateFin);
+	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission,
+														 Date dateDebut, Date dateFin);
 
 	int addOrUpdateEmploye(Employe employe);
-	
-	
-	
-
-	
 }
