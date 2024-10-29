@@ -27,7 +27,7 @@ pipeline {
             }
         }
 
-       /* stage('ARTIFACT CONSTRUCTION') {
+        stage('ARTIFACT CONSTRUCTION') {
             steps {
                 echo 'ARTIFACT CONSTRUCTION...'
                 sh 'mvn package'
@@ -77,11 +77,11 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
 
         // Terraform stages
-stage('Terraform Init') {
+/*stage('Terraform Init') {
             steps {
                 dir('terraform') {
                     withCredentials([
@@ -174,7 +174,7 @@ stage('Terraform Init') {
             }
         }
 
-   /* post {
+    post {
         success {
             mail to: 'chaiebsaid.01@gmail.com',
                  subject: "Jenkins Pipeline Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
