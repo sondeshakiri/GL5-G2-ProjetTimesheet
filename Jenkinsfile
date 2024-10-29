@@ -60,7 +60,7 @@ pipeline {
             }
         }
 
-        stage('BUILDING OUR IMAGE') {
+        /*stage('BUILDING OUR IMAGE') {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
@@ -77,7 +77,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
 stage('REPORT METRICS') {
             steps {
