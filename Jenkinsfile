@@ -79,7 +79,16 @@ pipeline {
             }
         }
 
-
+stage('REPORT METRICS') {
+            steps {
+                script {
+                    // Example: Push a custom metric to Prometheus Pushgateway
+                    sh """
+                        echo 'jenkins_builds_total{status="success"} 1' | curl --data-binary @- http://pushgateway:9091/metrics/job/jenkins
+                    """
+                }
+            }
+        }
         // Terraform stages
 /*stage('Terraform Init') {
             steps {
