@@ -10,7 +10,7 @@ services:
       - "8085:8085"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_USERNAME: son
       SPRING_DATASOURCE_PASSWORD:
     depends_on:
       - mysql
@@ -21,10 +21,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: timesheet2021
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_password
+      MYSQL_USER: son
+      MYSQL_PASSWORD: 
     volumes:
       - mysql_data:/var/lib/mysql
 
