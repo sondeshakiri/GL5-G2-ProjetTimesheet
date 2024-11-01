@@ -11,7 +11,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: son
-      SPRING_DATASOURCE_PASSWORD:
+      SPRING_DATASOURCE_PASSWORD: sonpassword
     depends_on:
       - mysql
 
@@ -24,7 +24,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: timesheet2021
       MYSQL_USER: son
-      MYSQL_PASSWORD: 
+      MYSQL_PASSWORD: sonpassword
     volumes:
       - mysql_data:/var/lib/mysql
 
