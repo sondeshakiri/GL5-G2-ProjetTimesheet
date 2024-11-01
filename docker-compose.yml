@@ -1,35 +1,32 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: timesheet2021
-      MYSQL_USER: username
-      MYSQL_PASSWORD: password
+  spring-app:
+    image: spring-app-image
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3306:3306"
-    networks:
-      - spring_network
-
-  tomcat:
-    image: sondeshakiri320/timesheetproject:latest  
-    container_name: tomcat
-    ports:
-      - "8085:8085"  
+      - "8085:8085"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021 
-      SPRING_DATASOURCE_USERNAME: username
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
     depends_on:
       - mysql
-    networks:
-      - spring_network
-    volumes:
-      - ./target/SpringMVC.war:/usr/local/tomcat/webapps/SpringMVC.war  
 
-networks:
-  spring_network:
-    driver: bridge
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: timesheet2021
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
