@@ -1,7 +1,6 @@
 provider "aws" {
   region = var.aws_region
 }
-
 resource "aws_vpc" "my_vpc" {
   cidr_block = var.vpc_cidr  # Utilisation de la variable pour le CIDR
 }
@@ -12,8 +11,8 @@ resource "aws_security_group" "eks_cluster_sg" {
   vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
 
   ingress {
-    from_port   = 8083
-    to_port     = 8083
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -43,8 +42,8 @@ resource "aws_security_group" "eks_worker_sg" {
   vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
 
   ingress {
-    from_port   = 8085
-    to_port     = 8085
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -71,7 +70,7 @@ resource "aws_security_group" "eks_worker_sg" {
 resource "aws_eks_cluster" "my_cluster" {
   name     = var.cluster_name
   role_arn = var.role_arn
-  version  = "1.30"
+  version  = "1.27"
 
   vpc_config {
     subnet_ids         = var.subnet_ids
@@ -87,7 +86,7 @@ resource "aws_eks_node_group" "my_node_group" {
 
   scaling_config {
     desired_size = 2
-    max_size     = 3
-    min_size     = 1
+    max_size     = 2
+    min_size     = 2
   }
 }
