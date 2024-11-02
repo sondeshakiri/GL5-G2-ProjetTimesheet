@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
+  labels:
+    app: mysql
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
@@ -13,16 +15,24 @@ spec:
         app: mysql
     spec:
       containers:
-        - name: mysql
-          image: mysql:5.7
-          env:
-            - name: MYSQL_ROOT_PASSWORD 
-              value: "root"     
-            - name: MYSQL_DATABASE
-              value: "timesheet2021"
-            - name: MYSQL_USER
-              value: "son"
-            - name: MYSQL_PASSWORD
-              value: "sonpassword"    
+        - name: mysql-container
+          image: mysql:8.0
           ports:
             - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: timesheet2021
+            - name: MYSQL_USER
+              value: son
+            - name: MYSQL_PASSWORD
+              value: sonpassword
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+

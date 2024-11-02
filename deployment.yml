@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: timesheet-deployment
+  name: timesheet-app
   labels:
     app: timesheet
 spec:
@@ -19,3 +19,11 @@ spec:
           image: sondeshakiri320/timesheetproject:latest
           ports:
             - containerPort: 8085
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-service:3306/timesheet2021?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+            - name: SPRING_DATASOURCE_USERNAME
+              value: son
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: sonpassword
+
