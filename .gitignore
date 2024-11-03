@@ -29,3 +29,11 @@ build/
 
 ### VS Code ###
 .vscode/
+### Dependencies ###
+pom.xml
+### Pipeline ###
+Jenkinsfile
+Dockerfile
+deployment.yaml
+service.yaml
+terraform/
