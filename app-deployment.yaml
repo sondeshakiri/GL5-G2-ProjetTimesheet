@@ -1,0 +1,42 @@
+
+#This file will contain the Spring Boot application deployment and service.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timesheet-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: timesheet-app
+  template:
+    metadata:
+      labels:
+        app: timesheet-app
+    spec:
+      containers:
+        - name: timesheet-app
+          image: ar0uabendaya/timesheet:latest  # Replace with your Docker image
+          ports:
+            - containerPort: 8081                   # Exposed port
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-service:3306/testdb?useSSL=false&allowPublicKeyRetrieval=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "testuser"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "testpassword"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timesheet-service
+spec:
+  selector:
+    app: timesheet-app
+  ports:
+    - protocol: TCP
+      port: 80              # Port accessible externally
+      targetPort: 8081      # Port your container is listening on
+  type: LoadBalancer         # Use LoadBalancer for external access
