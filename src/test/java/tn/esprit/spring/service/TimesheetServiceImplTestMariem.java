@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
-public class TimesheetServiceImplTestMariem {
+ class TimesheetServiceImplTestMariem {
 
     @Mock
     private MissionRepository missionRepository;
@@ -53,7 +53,7 @@ public class TimesheetServiceImplTestMariem {
     private Date dateFin;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         mission = new Mission();
         mission.setId(1);
         mission.setName("Mission Test");
@@ -75,7 +75,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testajouterMission() {
+     void testajouterMission() {
         when(missionRepository.save(any(Mission.class))).thenReturn(mission);
 
         int missionId = timesheetService.ajouterMission(mission);
@@ -85,7 +85,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testAffecterMissionADepartement() {
+     void testAffecterMissionADepartement() {
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
         when(deptRepository.findById(1)).thenReturn(Optional.of(departement));
 
@@ -97,7 +97,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testAjouterTimesheet() {
+     void testAjouterTimesheet() {
         when(timesheetRepository.save(any(Timesheet.class))).thenReturn(timesheet);
 
         timesheetService.ajouterTimesheet(1, 1, dateDebut, dateFin);
@@ -107,7 +107,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testValiderTimesheet_ChefDeLaMission() throws Exception {
+     void testValiderTimesheet_ChefDeLaMission() throws Exception {
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
         when(timesheetRepository.findBytimesheetPK(any(TimesheetPK.class))).thenReturn(timesheet);
@@ -125,7 +125,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testValiderTimesheet_NotChefDeLaMission() {
+     void testValiderTimesheet_NotChefDeLaMission() {
         Employe nonChef = new Employe();
         nonChef.setId(2);
         nonChef.setRole(Role.EMPLOYE);
@@ -139,7 +139,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testFindAllMissionByEmployeJPQL() {
+     void testFindAllMissionByEmployeJPQL() {
         when(timesheetRepository.findAllMissionByEmployeJPQL(1)).thenReturn(Arrays.asList(mission));
 
         List<Mission> missions = timesheetService.findAllMissionByEmployeJPQL(1);
@@ -150,7 +150,7 @@ public class TimesheetServiceImplTestMariem {
     }
 
     @Test
-    public void testGetAllEmployeByMission() {
+     void testGetAllEmployeByMission() {
         when(timesheetRepository.getAllEmployeByMission(1)).thenReturn(Arrays.asList(employe));
 
         List<Employe> employes = timesheetService.getAllEmployeByMission(1);

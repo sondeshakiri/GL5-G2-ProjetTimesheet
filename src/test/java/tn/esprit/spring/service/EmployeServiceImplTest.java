@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EmployeServiceImplTest {
+ class EmployeServiceImplTest {
 
     @InjectMocks
     EmployeServiceImpl employeService;
@@ -39,7 +39,7 @@ public class EmployeServiceImplTest {
     Role role; // Mocking the Role
 
     @Test
-    public void testAddOrUpdateEmploye() {
+     void testAddOrUpdateEmploye() {
         Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
 
         when(employeRepository.save(any(Employe.class))).thenReturn(employe);
@@ -51,7 +51,7 @@ public class EmployeServiceImplTest {
     }
 
     @Test
-    public void testMettreAjourEmailByEmployeId() {
+     void testMettreAjourEmailByEmployeId() {
         Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
         employe.setId(1);
 
@@ -64,7 +64,7 @@ public class EmployeServiceImplTest {
     }
 
     @Test
-    public void testAffecterEmployeADepartement() {
+     void testAffecterEmployeADepartement() {
         Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
         employe.setId(1);
 
@@ -88,7 +88,7 @@ public class EmployeServiceImplTest {
     }
 
     @Test
-    public void testAjouterContrat() {
+     void testAjouterContrat() {
         Contrat contrat = new Contrat();
         contrat.setReference(1234);
 
@@ -101,7 +101,7 @@ public class EmployeServiceImplTest {
     }
 
     @Test
-    public void testDeleteEmployeById() {
+     void testDeleteEmployeById() {
         Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
         employe.setId(1);
 
