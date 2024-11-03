@@ -18,13 +18,11 @@ public class RestControlEmploye {
 
 	private final IEmployeService iemployeservice;
 	private final IEntrepriseService ientrepriseservice;
-	private final ITimesheetService itimesheetservice;
 
 	// Constructor Injection
-	public RestControlEmploye(IEmployeService iemployeservice, IEntrepriseService ientrepriseservice, ITimesheetService itimesheetservice) {
+	public RestControlEmploye(IEmployeService iemployeservice, IEntrepriseService ientrepriseservice) {
 		this.iemployeservice = iemployeservice;
 		this.ientrepriseservice = ientrepriseservice;
-		this.itimesheetservice = itimesheetservice;
 	}
 
 	// API to add an employee

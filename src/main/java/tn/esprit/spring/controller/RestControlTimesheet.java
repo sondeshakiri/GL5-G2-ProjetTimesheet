@@ -13,14 +13,11 @@ import tn.esprit.spring.services.ITimesheetService;
 @RestController
 public class RestControlTimesheet {
 
-	private final IEmployeService iemployeservice;
-	private final IEntrepriseService ientrepriseservice;
 	private final ITimesheetService itimesheetservice;
 
 	// Constructor Injection
-	public RestControlTimesheet(IEmployeService iemployeservice, IEntrepriseService ientrepriseservice, ITimesheetService itimesheetservice) {
-		this.iemployeservice = iemployeservice;
-		this.ientrepriseservice = ientrepriseservice;
+	public RestControlTimesheet( ITimesheetService itimesheetservice) {
+
 		this.itimesheetservice = itimesheetservice;
 	}
 
