@@ -1,33 +1,35 @@
 provider "aws" {
   region = var.aws_region
 }
+
 resource "aws_vpc" "my_vpc" {
-  cidr_block = var.vpc_cidr  # Utilisation de la variable pour le CIDR
+  cidr_block = var.vpc_cidr
 }
 
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
   description = "Security group for EKS cluster ${var.cluster_name}"
-  vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]  # Consider restricting this
   }
+
   ingress {
-    from_port   = 8085   
+    from_port   = 8085
     to_port     = 8085
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]  # Consider restricting this
   }
 
   ingress {
     from_port   = 30000
     to_port     = 30000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]  # Consider restricting this
   }
 
   egress {
@@ -45,20 +47,20 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg-${var.cluster_name}"
   description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]  # Consider restricting this
   }
 
   ingress {
     from_port   = 30000
     to_port     = 30000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]  # Consider restricting this
   }
 
   egress {
@@ -87,7 +89,7 @@ resource "aws_eks_cluster" "my_cluster" {
 resource "aws_eks_node_group" "my_node_group" {
   cluster_name    = aws_eks_cluster.my_cluster.name
   node_group_name = "noeud1"
-  node_role_arn   = var.role_arn
+  node_role_arn   = var.role_arn  # Ensure this is a role with appropriate permissions
   subnet_ids      = var.subnet_ids
 
   scaling_config {
@@ -95,4 +97,16 @@ resource "aws_eks_node_group" "my_node_group" {
     max_size     = 2
     min_size     = 2
   }
+}
+
+output "cluster_endpoint" {
+  value = aws_eks_cluster.my_cluster.endpoint
+}
+
+output "cluster_name" {
+  value = aws_eks_cluster.my_cluster.name
+}
+
+output "node_group_name" {
+  value = aws_eks_node_group.my_node_group.node_group_name
 }
