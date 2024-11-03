@@ -1,22 +1,22 @@
-package tn.esprit.spring.services;
+package tn.esprit.spring.entities;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EmployeServiceMockitoTest {
 
     @Mock
@@ -27,8 +27,9 @@ public class EmployeServiceMockitoTest {
 
     private Employe employe;
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this); // Initialize mocks
         employe = new Employe();
         employe.setId(1);
         employe.setPrenom("John");
@@ -51,7 +52,7 @@ public class EmployeServiceMockitoTest {
     public void testGetEmployeById() {
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
 
-        Employe foundEmploye = employeService.getEmployeById(1); // Fixed the method call to employeService
+        Employe foundEmploye = employeService.getEmployeById(1);
         assertNotNull(foundEmploye);
         assertEquals("John", foundEmploye.getPrenom());
     }

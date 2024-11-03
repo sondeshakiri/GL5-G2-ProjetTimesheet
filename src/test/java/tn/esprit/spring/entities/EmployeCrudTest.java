@@ -1,18 +1,13 @@
-package tn.esprit.spring.services;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+package tn.esprit.spring.entities;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.repository.EmployeRepository;
 
-import static org.junit.Assert.*;
-
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmployeCrudTest {
 
@@ -29,35 +24,35 @@ public class EmployeCrudTest {
 
         Employe savedEmploye = employeRepository.save(employe);
 
-        assertNotNull(savedEmploye);
-        assertEquals("John", savedEmploye.getPrenom());
-        assertEquals("Doe", savedEmploye.getNom());
+        Assertions.assertNotNull(savedEmploye);
+        Assertions.assertEquals("John", savedEmploye.getPrenom());
+        Assertions.assertEquals("Doe", savedEmploye.getNom());
     }
 
     @Test
     public void testReadEmploye() {
         Employe employe = employeRepository.findById(8).orElse(null);
-        assertNotNull(employe);
-        assertEquals(8, employe.getId());
+        Assertions.assertNotNull(employe);
+        Assertions.assertEquals(8, employe.getId());
     }
 
     @Test
     public void testUpdateEmploye() {
         Employe employe = employeRepository.findById(8).orElse(null);
-        assertNotNull(employe);
+        Assertions.assertNotNull(employe);
 
         employe.setPrenom("UpdatedName");
         employeRepository.save(employe);
 
         Employe updatedEmploye = employeRepository.findById(8).orElse(null);
-        assertNotNull(updatedEmploye);
-        assertEquals("UpdatedName", updatedEmploye.getPrenom());
+        Assertions.assertNotNull(updatedEmploye);
+        Assertions.assertEquals("UpdatedName", updatedEmploye.getPrenom());
     }
 
     @Test
     public void testDeleteEmploye() {
         employeRepository.deleteById(8);
         Employe employe = employeRepository.findById(8).orElse(null);
-        assertNull(employe);
+        Assertions.assertNull(employe);
     }
 }
