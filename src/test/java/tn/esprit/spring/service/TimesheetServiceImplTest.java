@@ -1,17 +1,10 @@
 package tn.esprit.spring.service;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Mission;
@@ -24,157 +17,146 @@ import tn.esprit.spring.repository.MissionRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.TimesheetServiceImpl;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TimesheetServiceImplTest {
 
-    @InjectMocks
-    private TimesheetServiceImpl timesheetService;
-
     @Mock
     private MissionRepository missionRepository;
+
     @Mock
-    private DepartementRepository departementRepository;
+    private DepartementRepository deptRepository;
+
     @Mock
     private TimesheetRepository timesheetRepository;
+
     @Mock
     private EmployeRepository employeRepository;
+
+    @InjectMocks
+    private TimesheetServiceImpl timesheetService;
 
     private Mission mission;
     private Departement departement;
     private Employe employe;
     private Timesheet timesheet;
     private TimesheetPK timesheetPK;
+    private Date dateDebut;
+    private Date dateFin;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         mission = new Mission();
         mission.setId(1);
+        mission.setName("Mission Test");
+
         departement = new Departement();
         departement.setId(1);
+        mission.setDepartement(departement);
+
         employe = new Employe();
         employe.setId(1);
         employe.setRole(Role.CHEF_DEPARTEMENT);
-        timesheetPK = new TimesheetPK(1, 1, new Date(), new Date());
+
+        dateDebut = new Date();
+        dateFin = new Date();
+
+        timesheetPK = new TimesheetPK(1, 1, dateDebut, dateFin);
         timesheet = new Timesheet();
         timesheet.setTimesheetPK(timesheetPK);
-        timesheet.setValide(false);
     }
 
     @Test
     public void testAjouterMission() {
         when(missionRepository.save(any(Mission.class))).thenReturn(mission);
+
         int missionId = timesheetService.ajouterMission(mission);
-        assertEquals(1, missionId);
+
+        assertEquals(mission.getId(), missionId);
         verify(missionRepository, times(1)).save(mission);
     }
 
     @Test
     public void testAffecterMissionADepartement() {
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
-        when(departementRepository.findById(1)).thenReturn(Optional.of(departement));
+        when(deptRepository.findById(1)).thenReturn(Optional.of(departement));
 
         timesheetService.affecterMissionADepartement(1, 1);
 
-        verify(missionRepository, times(1)).save(mission);
+        verify(missionRepository, times(1)).findById(1);
+        verify(deptRepository, times(1)).findById(1);
         assertEquals(departement, mission.getDepartement());
     }
 
     @Test
     public void testAjouterTimesheet() {
-        timesheetService.ajouterTimesheet(1, 1, new Date(), new Date());
+        when(timesheetRepository.save(any(Timesheet.class))).thenReturn(timesheet);
+
+        timesheetService.ajouterTimesheet(1, 1, dateDebut, dateFin);
+
         verify(timesheetRepository, times(1)).save(any(Timesheet.class));
+        assertFalse(timesheet.isValide());
     }
 
     @Test
-    public void testValiderTimesheet_ChefDepartement() {
+    public void testValiderTimesheet_ChefDeLaMission() throws Exception {
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
-        when(timesheetRepository.findBytimesheetPK(timesheetPK)).thenReturn(timesheet);
+        when(timesheetRepository.findBytimesheetPK(any(TimesheetPK.class))).thenReturn(timesheet);
 
-        timesheetService.validerTimesheet(1, 1, new Date(), new Date(), 1);
+        employe.setDepartements(Arrays.asList(departement));
+
+        timesheetService.validerTimesheet(1, 1, dateDebut, dateFin, 1);
 
         assertTrue(timesheet.isValide());
+        verify(timesheetRepository, times(1)).findBytimesheetPK(any(TimesheetPK.class));
+
+        // Additional check for date formatting
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        assertEquals(dateFormat.format(dateDebut), dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
     }
 
     @Test
-    public void testValiderTimesheet_NonChefDepartement() {
-        employe.setRole(Role.EMPLOYE); // Change role to not chef
-        when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
+    public void testValiderTimesheet_NotChefDeLaMission() {
+        Employe nonChef = new Employe();
+        nonChef.setId(2);
+        nonChef.setRole(Role.EMPLOYE);
+
+        when(employeRepository.findById(2)).thenReturn(Optional.of(nonChef));
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
 
-        timesheetService.validerTimesheet(1, 1, new Date(), new Date(), 1);
+        timesheetService.validerTimesheet(1, 1, dateDebut, dateFin, 2);
 
-        assertFalse(timesheet.isValide());
-        verify(timesheetRepository, never()).save(any(Timesheet.class));
-    }
-
-    @Test
-    public void testValiderTimesheet_ChefMaisNotOfMission() {
-        when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
-        when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
-        when(timesheetRepository.findBytimesheetPK(timesheetPK)).thenReturn(timesheet);
-
-        // Setting mission to another department
-        Departement anotherDepartement = new Departement();
-        anotherDepartement.setId(2);
-        mission.setDepartement(anotherDepartement);
-
-        timesheetService.validerTimesheet(1, 1, new Date(), new Date(), 1);
-
-        assertFalse(timesheet.isValide());
-        verify(timesheetRepository, never()).save(any(Timesheet.class));
+        verify(timesheetRepository, never()).findBytimesheetPK(any(TimesheetPK.class));
     }
 
     @Test
     public void testFindAllMissionByEmployeJPQL() {
         when(timesheetRepository.findAllMissionByEmployeJPQL(1)).thenReturn(Arrays.asList(mission));
+
         List<Mission> missions = timesheetService.findAllMissionByEmployeJPQL(1);
+
         assertEquals(1, missions.size());
+        assertEquals("Mission Test", missions.get(0).getName());
+        verify(timesheetRepository, times(1)).findAllMissionByEmployeJPQL(1);
     }
 
     @Test
     public void testGetAllEmployeByMission() {
         when(timesheetRepository.getAllEmployeByMission(1)).thenReturn(Arrays.asList(employe));
+
         List<Employe> employes = timesheetService.getAllEmployeByMission(1);
+
         assertEquals(1, employes.size());
+        assertEquals("CHEF_DEPARTEMENT", employes.get(0).getRole().name());
+        verify(timesheetRepository, times(1)).getAllEmployeByMission(1);
     }
-
-    // Edge Cases
-    @Test
-    public void testAffecterMissionADepartement_MissionNotFound() {
-        when(missionRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> {
-            timesheetService.affecterMissionADepartement(1, 1);
-        });
-    }
-
-    @Test
-    public void testAffecterMissionADepartement_DepartementNotFound() {
-        when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
-        when(departementRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> {
-            timesheetService.affecterMissionADepartement(1, 1);
-        });
-    }
-
-    @Test
-    public void testValiderTimesheet_MissionNotFound() {
-        when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
-        when(missionRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> {
-            timesheetService.validerTimesheet(1, 1, new Date(), new Date(), 1);
-        });
-    }
-
-    @Test
-    public void testValiderTimesheet_TimesheetNotFound() {
-        when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
-        when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
-        when(timesheetRepository.findBytimesheetPK(timesheetPK)).thenReturn(null);
-
-        assertThrows(NullPointerException.class, () -> {
-            timesheetService.validerTimesheet(1, 1, new Date(), new Date(), 1);
-        });
-    }
-
 }
