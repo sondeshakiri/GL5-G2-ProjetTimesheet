@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    public void testAjouterContrat() {
+     void testAjouterContrat() {
         Contrat contrat = new Contrat();
         contrat.setReference(6);
         contrat.setSalaire(1400);

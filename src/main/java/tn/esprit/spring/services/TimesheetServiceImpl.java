@@ -97,9 +97,9 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		if (timesheet != null) {
 			timesheet.setValide(true);
 
-			// Read a date from the database
+			// Read a date from the database with conditional formatting
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			logger.info("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
+			logger.info("dateDebut : {}", () -> dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
 		}
 	}
 

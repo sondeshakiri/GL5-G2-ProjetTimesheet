@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-public class EntrepriseServiceImplTest {
+ class EntrepriseServiceImplTest {
 
     @InjectMocks
     EntrepriseServiceImpl entrepriseService;

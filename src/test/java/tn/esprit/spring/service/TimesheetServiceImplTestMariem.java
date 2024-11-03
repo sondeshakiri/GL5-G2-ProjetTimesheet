@@ -107,7 +107,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testValiderTimesheet_ChefDeLaMission() throws Exception {
+     void testValiderTimesheet_ChefDeLaMission() {
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
         when(missionRepository.findById(1)).thenReturn(Optional.of(mission));
         when(timesheetRepository.findBytimesheetPK(any(TimesheetPK.class))).thenReturn(timesheet);
