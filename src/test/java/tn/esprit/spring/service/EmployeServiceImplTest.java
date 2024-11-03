@@ -35,12 +35,11 @@ public class EmployeServiceImplTest {
     @Mock
     ContratRepository contratRepository;
 
-    @Mock
-    Role role; // Mocking the Role
+
 
     @Test
     public void testAddOrUpdateEmploye() {
-        Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
+        Employe employe = new Employe();
 
         when(employeRepository.save(any(Employe.class))).thenReturn(employe);
 
@@ -52,7 +51,7 @@ public class EmployeServiceImplTest {
 
     @Test
     public void testMettreAjourEmailByEmployeId() {
-        Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
+        Employe employe = new Employe();
         employe.setId(1);
 
         when(employeRepository.findById(1)).thenReturn(Optional.of(employe));
@@ -65,7 +64,7 @@ public class EmployeServiceImplTest {
 
     @Test
     public void testAffecterEmployeADepartement() {
-        Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
+        Employe employe = new Employe();
         employe.setId(1);
 
         // Create mock lists to avoid NullPointerException
@@ -102,7 +101,7 @@ public class EmployeServiceImplTest {
 
     @Test
     public void testDeleteEmployeById() {
-        Employe employe = new Employe("Chaieb", "Said", "john@example.com", true, role);
+        Employe employe = new Employe();
         employe.setId(1);
 
         // Mock non-null lists of departements to avoid NullPointerException

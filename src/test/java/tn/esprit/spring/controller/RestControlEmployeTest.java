@@ -22,13 +22,12 @@ public class RestControlEmployeTest {
     @Mock
     IEmployeService iemployeservice;
 
-    @Mock
-    Role role; // Mocking the Role
 
     @Test
     public void testAjouterEmploye() {
         // Creating an Employe object with the mocked role
-        Employe employe = new Employe("Chaieb","Said" ,"Khaled.kallel@ssiiconsulting.tn", true, role);
+        Employe employe = new Employe();
+        employe.setNom("Chaieb");
 
         // Mock the behavior of iemployeservice to return the employe after calling addOrUpdateEmploye
         when(iemployeservice.addOrUpdateEmploye(any(Employe.class))).thenReturn(employe.getId());
