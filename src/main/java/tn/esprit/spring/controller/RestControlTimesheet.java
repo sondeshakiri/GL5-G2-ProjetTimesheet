@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Mission;
-import tn.esprit.spring.services.IEmployeService;
-import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.services.ITimesheetService;
 
 @RestController
@@ -16,14 +14,12 @@ public class RestControlTimesheet {
 	private final ITimesheetService itimesheetservice;
 
 	// Constructor Injection
-	public RestControlTimesheet( ITimesheetService itimesheetservice) {
-
+	public RestControlTimesheet(ITimesheetService itimesheetservice) {
 		this.itimesheetservice = itimesheetservice;
 	}
 
 	// API to add a mission
 	@PostMapping("/ajouterMission")
-	@ResponseBody
 	public int ajouterMission(@RequestBody Mission mission) {
 		itimesheetservice.ajouterMission(mission);
 		return mission.getId();
@@ -37,7 +33,6 @@ public class RestControlTimesheet {
 
 	// Add timesheet
 	@PostMapping("/ajouterTimesheet/{idmission}/{idemp}/{dated}/{datef}")
-	@ResponseBody
 	public void ajouterTimesheet(@PathVariable("idmission") int missionId, @PathVariable("idemp") int employeId,
 								 @PathVariable("dated") Date dateDebut, @PathVariable("datef") Date dateFin) {
 		itimesheetservice.ajouterTimesheet(missionId, employeId, dateDebut, dateFin);
@@ -52,14 +47,12 @@ public class RestControlTimesheet {
 
 	// Find all missions by employee
 	@GetMapping(value = "findAllMissionByEmployeJPQL/{idemp}")
-	@ResponseBody
 	public List<Mission> findAllMissionByEmployeJPQL(@PathVariable("idemp") int employeId) {
 		return itimesheetservice.findAllMissionByEmployeJPQL(employeId);
 	}
 
 	// Get all employees by mission
 	@GetMapping(value = "getAllEmployeByMission/{idmission}")
-	@ResponseBody
 	public List<Employe> getAllEmployeByMission(@PathVariable("idmission") int missionId) {
 		return itimesheetservice.getAllEmployeByMission(missionId);
 	}

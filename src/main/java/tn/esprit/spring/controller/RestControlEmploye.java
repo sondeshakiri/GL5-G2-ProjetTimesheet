@@ -11,7 +11,6 @@ import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
-import tn.esprit.spring.services.ITimesheetService;
 
 @RestController
 public class RestControlEmploye {
@@ -27,7 +26,6 @@ public class RestControlEmploye {
 
 	// API to add an employee
 	@PostMapping("/ajouterEmployer")
-	@ResponseBody
 	public Employe ajouterEmploye(@RequestBody Employe employe) {
 		iemployeservice.addOrUpdateEmploye(employe);
 		return employe;
@@ -35,7 +33,6 @@ public class RestControlEmploye {
 
 	// Update email
 	@PutMapping(value = "/modifyEmail/{id}/{newemail}")
-	@ResponseBody
 	public void mettreAjourEmailByEmployeId(@PathVariable("newemail") String email, @PathVariable("id") int employeId) {
 		iemployeservice.mettreAjourEmailByEmployeId(email, employeId);
 	}
@@ -54,7 +51,6 @@ public class RestControlEmploye {
 
 	// Add contract
 	@PostMapping("/ajouterContrat")
-	@ResponseBody
 	public int ajouterContrat(@RequestBody Contrat contrat) {
 		iemployeservice.ajouterContrat(contrat);
 		return contrat.getReference();
@@ -68,42 +64,36 @@ public class RestControlEmploye {
 
 	// Get employee first name by ID
 	@GetMapping(value = "getEmployePrenomById/{idemp}")
-	@ResponseBody
 	public String getEmployePrenomById(@PathVariable("idemp") int employeId) {
 		return iemployeservice.getEmployePrenomById(employeId);
 	}
 
 	// Delete employee by ID
 	@DeleteMapping("/deleteEmployeById/{idemp}")
-	@ResponseBody
 	public void deleteEmployeById(@PathVariable("idemp") int employeId) {
 		iemployeservice.deleteEmployeById(employeId);
 	}
 
 	// Delete contract by ID
 	@DeleteMapping("/deleteContratById/{idcontrat}")
-	@ResponseBody
 	public void deleteContratById(@PathVariable("idcontrat") int contratId) {
 		iemployeservice.deleteContratById(contratId);
 	}
 
 	// Get total number of employees
 	@GetMapping(value = "getNombreEmployeJPQL")
-	@ResponseBody
 	public int getNombreEmployeJPQL() {
 		return iemployeservice.getNombreEmployeJPQL();
 	}
 
 	// Get all employee names
 	@GetMapping(value = "getAllEmployeNamesJPQL")
-	@ResponseBody
 	public List<String> getAllEmployeNamesJPQL() {
 		return iemployeservice.getAllEmployeNamesJPQL();
 	}
 
 	// Get all employees in an enterprise
 	@GetMapping(value = "getAllEmployeByEntreprise/{identreprise}")
-	@ResponseBody
 	public List<Employe> getAllEmployeByEntreprise(@PathVariable("identreprise") int identreprise) {
 		Entreprise entreprise = ientrepriseservice.getEntrepriseById(identreprise);
 		return iemployeservice.getAllEmployeByEntreprise(entreprise);
@@ -111,28 +101,24 @@ public class RestControlEmploye {
 
 	// Update email with JPQL
 	@PutMapping(value = "/mettreAjourEmailByEmployeIdJPQL/{id}/{newemail}")
-	@ResponseBody
 	public void mettreAjourEmailByEmployeIdJPQL(@PathVariable("newemail") String email, @PathVariable("id") int employeId) {
 		iemployeservice.mettreAjourEmailByEmployeIdJPQL(email, employeId);
 	}
 
 	// Delete all contracts with JPQL
 	@DeleteMapping("/deleteAllContratJPQL")
-	@ResponseBody
 	public void deleteAllContratJPQL() {
 		iemployeservice.deleteAllContratJPQL();
 	}
 
 	// Get salary by employee ID with JPQL
 	@GetMapping(value = "getSalaireByEmployeIdJPQL/{idemp}")
-	@ResponseBody
 	public float getSalaireByEmployeIdJPQL(@PathVariable("idemp") int employeId) {
 		return iemployeservice.getSalaireByEmployeIdJPQL(employeId);
 	}
 
 	// Get average salary by department ID
 	@GetMapping(value = "getSalaireMoyenByDepartementId/{iddept}")
-	@ResponseBody
 	public Double getSalaireMoyenByDepartementId(@PathVariable("iddept") int departementId) {
 		return iemployeservice.getSalaireMoyenByDepartementId(departementId);
 	}
@@ -144,7 +130,6 @@ public class RestControlEmploye {
 
 	// Get all employees
 	@GetMapping(value = "/getAllEmployes")
-	@ResponseBody
 	public List<Employe> getAllEmployes() {
 		return iemployeservice.getAllEmployes();
 	}

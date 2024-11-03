@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
@@ -18,6 +20,8 @@ import tn.esprit.spring.repository.TimesheetRepository;
 
 @Service
 public class TimesheetServiceImpl implements ITimesheetService {
+
+	private static final Logger logger = LogManager.getLogger(TimesheetServiceImpl.class);
 
 	private final MissionRepository missionRepository;
 	private final DepartementRepository departementRepository;
@@ -62,19 +66,19 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	}
 
 	public void validerTimesheet(int missionId, int employeId, Date dateDebut, Date dateFin, int validateurId) {
-		System.out.println("In valider Timesheet");
+		logger.info("In validerTimesheet method");
 
 		Employe validateur = employeRepository.findById(validateurId).orElse(null);
 		Mission mission = missionRepository.findById(missionId).orElse(null);
 
 		if (validateur == null || mission == null) {
-			System.out.println("Validateur or Mission not found.");
+			logger.error("Validateur or Mission not found.");
 			return;
 		}
 
 		// Check if the employee is a department head
 		if (!Role.CHEF_DEPARTEMENT.equals(validateur.getRole())) {
-			System.out.println("Employee must be a department head to validate a timesheet!");
+			logger.warn("Employee must be a department head to validate a timesheet!");
 			return;
 		}
 
@@ -83,7 +87,7 @@ public class TimesheetServiceImpl implements ITimesheetService {
 				.anyMatch(dep -> dep.getId() == mission.getDepartement().getId());
 
 		if (!chefDeLaMission) {
-			System.out.println("Employee must be the department head of the mission's department.");
+			logger.warn("Employee must be the department head of the mission's department.");
 			return;
 		}
 
@@ -95,7 +99,7 @@ public class TimesheetServiceImpl implements ITimesheetService {
 
 			// Read a date from the database
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
+			logger.info("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
 		}
 	}
 
