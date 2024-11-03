@@ -1,11 +1,8 @@
 package tn.esprit.spring.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import tn.esprit.spring.entities.Departement;
 
-@Repository
-public interface DepartementRepository extends CrudRepository<Departement, Integer>{
-
+public interface DepartementRepository extends JpaRepository<Departement, Integer> {
 }
