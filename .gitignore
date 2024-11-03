@@ -29,7 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
-#####
+
 ### Pipeline ###
 Jenkinsfile
 Dockerfile
