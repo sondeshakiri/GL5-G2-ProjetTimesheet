@@ -75,7 +75,7 @@ public class TimesheetServiceImplTest {
     }
 
     @Test
-    public void testAjouterMission() {
+    public void testajouterMission() {
         when(missionRepository.save(any(Mission.class))).thenReturn(mission);
 
         int missionId = timesheetService.ajouterMission(mission);
