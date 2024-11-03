@@ -29,10 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Pipeline ###
-Jenkinsfile
-Dockerfile
-deployment.yaml
-service.yaml
-terraform/
