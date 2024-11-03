@@ -29,8 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
-### Dependencies ###
-pom.xml
+
 ### Pipeline ###
 Jenkinsfile
 Dockerfile
