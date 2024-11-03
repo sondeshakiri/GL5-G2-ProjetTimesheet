@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-public class EntrepriseServiceImplTest {
+ class EntrepriseServiceImplTest {
 
     @InjectMocks
     EntrepriseServiceImpl entrepriseService;
@@ -31,7 +31,7 @@ public class EntrepriseServiceImplTest {
     DepartementRepository departementRepository;
 
     @Test
-    public void testAddEntrepriseWithMock() {
+     void testAddEntrepriseWithMock() {
         Entreprise entreprise = new Entreprise("Tech Solutions", "Business Park");
 
         // Mock the behavior of entrepriseRepository to return the entreprise when saved
@@ -44,7 +44,7 @@ public class EntrepriseServiceImplTest {
     }
 
     @Test
-    public void testGetEntrepriseByIdWithMock() {
+     void testGetEntrepriseByIdWithMock() {
         Entreprise entreprise = new Entreprise("Tech Solutions", "Business Park");
         entreprise.setId(1); // Set an ID for the mock entreprise
 
@@ -59,7 +59,7 @@ public class EntrepriseServiceImplTest {
     }
 
     @Test
-    public void testDeleteEntrepriseWithMock() {
+     void testDeleteEntrepriseWithMock() {
         Entreprise entreprise = new Entreprise("Tech Solutions", "Business Park");
         entreprise.setId(1);
 
@@ -75,7 +75,7 @@ public class EntrepriseServiceImplTest {
 
 
     @Test
-    public void testAffecterDepartementAEntrepriseWithMock() {
+     void testAffecterDepartementAEntrepriseWithMock() {
         Entreprise entreprise = new Entreprise("Tech Solutions", "Business Park");
         entreprise.setId(1);
         Departement departement = new Departement("IT");

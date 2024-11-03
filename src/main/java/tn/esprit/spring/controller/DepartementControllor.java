@@ -1,6 +1,5 @@
 package tn.esprit.spring.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.entities.Departement;
@@ -12,8 +11,12 @@ import java.util.List;
 @RequestMapping("/departements")
 public class DepartementControllor {
 
-    @Autowired
-    private DepartementService departementService;
+    private final DepartementService departementService;
+
+    // Constructor Injection
+    public DepartementControllor(DepartementService departementService) {
+        this.departementService = departementService;
+    }
 
     // API pour obtenir tous les départements
     @GetMapping("/all")

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RestControlEmployeTest {
+ class RestControlEmployeTest {
 
     @InjectMocks
     RestControlEmploye restControlEmploye;
@@ -26,7 +26,7 @@ public class RestControlEmployeTest {
     Role role; // Mocking the Role
 
     @Test
-    public void testAjouterEmploye() {
+     void testAjouterEmploye() {
         // Creating an Employe object with the mocked role
         Employe employe = new Employe("Chaieb","Said" ,"Khaled.kallel@ssiiconsulting.tn", true, role);
 
@@ -44,7 +44,7 @@ public class RestControlEmployeTest {
         verify(iemployeservice, times(1)).addOrUpdateEmploye(employe);
     }
     @Test
-    public void testMettreAjourEmailByEmployeId() {
+     void testMettreAjourEmailByEmployeId() {
         doNothing().when(iemployeservice).mettreAjourEmailByEmployeId(anyString(), anyInt());
 
         restControlEmploye.mettreAjourEmailByEmployeId("newemail@test.com", 1);
@@ -53,7 +53,7 @@ public class RestControlEmployeTest {
     }
 
     @Test
-    public void testAjouterContrat() {
+     void testAjouterContrat() {
         Contrat contrat = new Contrat();
         contrat.setReference(6);
         contrat.setSalaire(1400);
@@ -67,7 +67,7 @@ public class RestControlEmployeTest {
     }
 
     @Test
-    public void testDeleteEmployeById() {
+     void testDeleteEmployeById() {
         doNothing().when(iemployeservice).deleteEmployeById(1);
 
         restControlEmploye.deleteEmployeById(1);

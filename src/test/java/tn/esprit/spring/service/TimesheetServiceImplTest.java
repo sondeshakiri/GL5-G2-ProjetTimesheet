@@ -13,14 +13,13 @@ import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.TimesheetServiceImpl;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TimesheetServiceImplTest {
+class TimesheetServiceImplTest {
 
     @InjectMocks
     TimesheetServiceImpl timesheetService;
@@ -40,7 +39,7 @@ public class TimesheetServiceImplTest {
     Role role; // Mocking the Role
 
     @Test
-    public void testAjouterMission() {
+     void testAjouterMission() {
         Mission mission = new Mission("Mission A", "Description A");
         mission.setId(1);
 
@@ -53,7 +52,7 @@ public class TimesheetServiceImplTest {
     }
 
     @Test
-    public void testAffecterMissionADepartement() {
+     void testAffecterMissionADepartement() {
         Mission mission = new Mission("Mission A", "Description A");
         mission.setId(1);
 
@@ -71,7 +70,7 @@ public class TimesheetServiceImplTest {
     }
 
     @Test
-    public void testAjouterTimesheet() {
+     void testAjouterTimesheet() {
         TimesheetPK timesheetPK = new TimesheetPK(1, 1, new Date(), new Date());
         Timesheet timesheet = new Timesheet();
         timesheet.setTimesheetPK(timesheetPK);

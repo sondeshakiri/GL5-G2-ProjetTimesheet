@@ -1,18 +1,20 @@
 package tn.esprit.spring.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.repository.DepartementRepository;
-
 
 import java.util.List;
 
 @Service
 public class DepartementServiceImpl implements DepartementService {
 
-    @Autowired
-    private DepartementRepository departementRepository;
+    private final DepartementRepository departementRepository;
+
+    // Constructor Injection
+    public DepartementServiceImpl(DepartementRepository departementRepository) {
+        this.departementRepository = departementRepository;
+    }
 
     @Override
     public List<Departement> findAll() {

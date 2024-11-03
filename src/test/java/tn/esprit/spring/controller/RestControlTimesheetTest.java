@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RestControlTimesheetTest {
+ class RestControlTimesheetTest {
 
     @InjectMocks
     RestControlTimesheet restControlTimesheet;
@@ -21,7 +21,7 @@ public class RestControlTimesheetTest {
     ITimesheetService itimesheetservice;
 
     @Test
-    public void testAjouterMission() {
+     void testAjouterMission() {
         Mission mission = new Mission("mamission", "c ma mission");
 
         when(itimesheetservice.ajouterMission(any(Mission.class))).thenReturn(mission.getId());
@@ -33,7 +33,7 @@ public class RestControlTimesheetTest {
     }
 
     @Test
-    public void testAffecterMissionADepartement() {
+     void testAffecterMissionADepartement() {
         doNothing().when(itimesheetservice).affecterMissionADepartement(1, 1);
 
         restControlTimesheet.affecterMissionADepartement(1, 1);
@@ -42,7 +42,7 @@ public class RestControlTimesheetTest {
     }
 
     @Test
-    public void testValiderTimesheet() {
+     void testValiderTimesheet() {
         // Using matchers for all arguments
         doNothing().when(itimesheetservice).validerTimesheet(eq(1), eq(1), any(), any(), eq(1));
 
@@ -53,7 +53,7 @@ public class RestControlTimesheetTest {
 
 
     @Test
-    public void testGetAllEmployeByMission() {
+     void testGetAllEmployeByMission() {
         restControlTimesheet.getAllEmployeByMission(1);
 
         verify(itimesheetservice, times(1)).getAllEmployeByMission(1);
