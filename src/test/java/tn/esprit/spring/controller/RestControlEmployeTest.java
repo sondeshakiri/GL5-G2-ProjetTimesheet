@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.services.IEmployeService;
 
 import static org.mockito.Mockito.*;
