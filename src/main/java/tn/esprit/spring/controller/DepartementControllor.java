@@ -3,8 +3,8 @@ package tn.esprit.spring.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.spring.Dtos.DepartementDTO;
-import tn.esprit.spring.Mapper.DepartementMapper;
+import tn.esprit.spring.dtos.DepartementDTO;
+import tn.esprit.spring.mapper.DepartementMapper;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.services.DepartementService;
 

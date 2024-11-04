@@ -1,9 +1,9 @@
-package tn.esprit.spring.Mapper;
+package tn.esprit.spring.mapper;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import tn.esprit.spring.Dtos.DepartementDTO;
+import tn.esprit.spring.dtos.DepartementDTO;
 import tn.esprit.spring.entities.Departement;
 
 @Component

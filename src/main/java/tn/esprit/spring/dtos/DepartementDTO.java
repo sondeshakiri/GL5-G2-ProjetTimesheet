@@ -1,4 +1,4 @@
-package tn.esprit.spring.Dtos;
+package tn.esprit.spring.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

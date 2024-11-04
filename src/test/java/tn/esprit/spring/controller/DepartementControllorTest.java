@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
-import tn.esprit.spring.Dtos.DepartementDTO;
-import tn.esprit.spring.Mapper.DepartementMapper;
+import tn.esprit.spring.dtos.DepartementDTO;
+import tn.esprit.spring.mapper.DepartementMapper;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.services.DepartementService;
 
