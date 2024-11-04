@@ -3,6 +3,8 @@ package tn.esprit.spring.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.spring.Dtos.DepartementDTO;
+import tn.esprit.spring.Mapper.DepartementMapper;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.services.DepartementService;
 
@@ -14,6 +16,7 @@ public class DepartementControllor {
 
 
     private final DepartementService departementService;
+    private final DepartementMapper departementMapper;
 
     // API pour obtenir tous les départements
     @GetMapping("/all")
@@ -30,14 +33,16 @@ public class DepartementControllor {
 
     // API pour créer un nouveau département
     @PostMapping("/create")
-    public Departement createDepartement(@RequestBody Departement departement) {
+    public Departement createDepartement(@RequestBody DepartementDTO departementDTO) {
+        Departement departement = departementMapper.convertToEntity(departementDTO);
         return departementService.save(departement);
     }
 
     // API pour mettre à jour un département existant
     @PutMapping("/update/{id}")
-    public ResponseEntity<Departement> updateDepartement(@PathVariable int id, @RequestBody Departement departement) {
-        departement.setId(id);
+    public ResponseEntity<Departement> updateDepartement(@PathVariable int id, @RequestBody DepartementDTO departementDTO) {
+        departementDTO.setId(id);
+        Departement departement = departementMapper.convertToEntity(departementDTO);
         Departement updatedDepartement = departementService.update(departement);
         return ResponseEntity.ok(updatedDepartement);
     }

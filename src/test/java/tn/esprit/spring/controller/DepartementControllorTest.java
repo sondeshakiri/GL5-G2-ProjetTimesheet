@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import tn.esprit.spring.Dtos.DepartementDTO;
+import tn.esprit.spring.Mapper.DepartementMapper;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.services.DepartementService;
 
@@ -16,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class DepartementControllorTest {
-
+    @Mock
+    private DepartementMapper departementMapper;
     @Mock
     private DepartementService departementService;
 
@@ -54,28 +57,40 @@ class DepartementControllorTest {
 
     @Test
     void testCreateDepartement() {
+        DepartementDTO departementDTO = new DepartementDTO();
         Departement departement = new Departement();
+
+        // Mock the mapper to convert DepartementDTO to Departement
+
+        when(departementMapper.convertToEntity(departementDTO)).thenReturn(departement);
         when(departementService.save(departement)).thenReturn(departement);
 
-        Departement result = departementController.createDepartement(departement);
+        Departement result = departementController.createDepartement(departementDTO);
 
         assertNotNull(result);
         assertEquals(departement, result);
+        verify(departementMapper, times(1)).convertToEntity(departementDTO);
         verify(departementService, times(1)).save(departement);
     }
 
     @Test
     void testUpdateDepartement() {
+        int id = 1;
+        DepartementDTO departementDTO = new DepartementDTO();
+        departementDTO.setId(id);
         Departement departement = new Departement();
+
+        // Mock the mapper to convert DepartementDTO to Departement
+        when(departementMapper.convertToEntity(departementDTO)).thenReturn(departement);
         when(departementService.update(departement)).thenReturn(departement);
 
-        ResponseEntity<Departement> response = departementController.updateDepartement(1, departement);
+        ResponseEntity<Departement> response = departementController.updateDepartement(id, departementDTO);
 
         assertNotNull(response.getBody());
         assertEquals(departement, response.getBody());
+        verify(departementMapper, times(1)).convertToEntity(departementDTO);
         verify(departementService, times(1)).update(departement);
     }
-
     @Test
     void testDeleteDepartement() {
         doNothing().when(departementService).delete(1);
