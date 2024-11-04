@@ -17,7 +17,7 @@ import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEntrepriseService;
 @WebMvcTest(RestControlEntreprise.class)
-public class EntrepriseControllerTest {
+ class EntrepriseControllerTest {
 
 
 
