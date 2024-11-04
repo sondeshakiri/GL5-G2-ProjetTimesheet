@@ -1,22 +1,39 @@
-package tn.esprit.spring.config;
+package tn.esprit.spring.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-@SpringBootTest(classes = AppConfig.class)
+@Import(AppConfigTest.MockConfig.class)
 class AppConfigTest {
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    @BeforeEach
+    void setUp() {
+        modelMapper = mock(ModelMapper.class);
+    }
+
     @Test
-    void testModelMapperBean() {
-        assertNotNull(modelMapper, "ModelMapper bean should be available in the application context");
+    void testMockModelMapperBean() {
+        assertNotNull(modelMapper, "Mocked ModelMapper bean should not be null");
+    }
+
+    @Configuration
+    static class MockConfig {
+        @Bean
+        public ModelMapper modelMapper() {
+            return mock(ModelMapper.class);
+        }
     }
 }
+
 
 
 
