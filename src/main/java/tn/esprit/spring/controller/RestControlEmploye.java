@@ -3,7 +3,7 @@ package tn.esprit.spring.controller;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,18 +20,15 @@ import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
-import tn.esprit.spring.services.ITimesheetService;
-
+@AllArgsConstructor
 @RestController
 public class RestControlEmploye {
 
 	
-	@Autowired
-	IEmployeService iemployeservice;
-	@Autowired
-	IEntrepriseService ientrepriseservice;
-	@Autowired
-	ITimesheetService itimesheetservice;
+
+	private final IEmployeService iemployeservice;
+	private final IEntrepriseService ientrepriseservice;
+
 
 	
 	// http://localhost:8081/SpringMVC/servlet/ajouterEmployer
