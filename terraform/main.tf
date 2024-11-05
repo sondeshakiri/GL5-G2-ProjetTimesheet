@@ -54,7 +54,7 @@ resource "aws_internet_gateway" "igw" {
 
 # NAT Gateway (for internet access from private subnets)
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  domain = "vpc"  # Use domain instead of vpc
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -215,9 +215,5 @@ resource "aws_eks_node_group" "my_node_group" {
     desired_size = 2
     max_size     = 3
     min_size     = 1
-  }
-
-  resources {
-    security_group_ids = [aws_security_group.eks_worker_sg.id]
   }
 }
