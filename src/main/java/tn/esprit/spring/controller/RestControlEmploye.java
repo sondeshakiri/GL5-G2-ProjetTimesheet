@@ -1,16 +1,14 @@
 package tn.esprit.spring.controller;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.Entreprise;
-import tn.esprit.spring.entities.Mission;
-import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.dto.EmployeDTO;
+import tn.esprit.spring.entities.*;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class RestControlEmploye {
@@ -18,7 +16,6 @@ public class RestControlEmploye {
 	private final IEmployeService iemployeservice;
 	private final IEntrepriseService ientrepriseservice;
 
-	// Constructor Injection
 	public RestControlEmploye(IEmployeService iemployeservice, IEntrepriseService ientrepriseservice) {
 		this.iemployeservice = iemployeservice;
 		this.ientrepriseservice = ientrepriseservice;
@@ -26,9 +23,10 @@ public class RestControlEmploye {
 
 	// API to add an employee
 	@PostMapping("/ajouterEmployer")
-	public Employe ajouterEmploye(@RequestBody Employe employe) {
+	public EmployeDTO ajouterEmploye(@RequestBody EmployeDTO employeDTO) {
+		Employe employe = mapToEntity(employeDTO);
 		iemployeservice.addOrUpdateEmploye(employe);
-		return employe;
+		return mapToDTO(employe);
 	}
 
 	// Update email
@@ -94,9 +92,11 @@ public class RestControlEmploye {
 
 	// Get all employees in an enterprise
 	@GetMapping(value = "getAllEmployeByEntreprise/{identreprise}")
-	public List<Employe> getAllEmployeByEntreprise(@PathVariable("identreprise") int identreprise) {
-		Entreprise entreprise = ientrepriseservice.getEntrepriseById(identreprise);
-		return iemployeservice.getAllEmployeByEntreprise(entreprise);
+	public List<EmployeDTO> getAllEmployeByEntreprise(@PathVariable("identreprise") int identreprise) {
+		return iemployeservice.getAllEmployeByEntreprise(ientrepriseservice.getEntrepriseById(identreprise))
+				.stream()
+				.map(this::mapToDTO)
+				.collect(Collectors.toList());
 	}
 
 	// Update email with JPQL
@@ -129,8 +129,27 @@ public class RestControlEmploye {
 	}
 
 	// Get all employees
-	@GetMapping(value = "/getAllEmployes")
-	public List<Employe> getAllEmployes() {
-		return iemployeservice.getAllEmployes();
+	@GetMapping("/getAllEmployes")
+	public List<EmployeDTO> getAllEmployes() {
+		return iemployeservice.getAllEmployes().stream()
+				.map(this::mapToDTO)
+				.collect(Collectors.toList());
+	}
+
+	// Utility methods to map between Employe and EmployeDTO
+	private EmployeDTO mapToDTO(Employe employe) {
+		return new EmployeDTO(employe.getId(), employe.getPrenom(), employe.getNom(),
+				employe.getEmail(), employe.isActif(), employe.getRole().name());
+	}
+
+	private Employe mapToEntity(EmployeDTO employeDTO) {
+		Employe employe = new Employe();
+		employe.setId(employeDTO.getId());
+		employe.setPrenom(employeDTO.getPrenom());
+		employe.setNom(employeDTO.getNom());
+		employe.setEmail(employeDTO.getEmail());
+		employe.setActif(employeDTO.isActif());
+		employe.setRole(Role.valueOf(employeDTO.getRole()));
+		return employe;
 	}
 }

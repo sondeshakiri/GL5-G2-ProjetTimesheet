@@ -1,77 +1,86 @@
 package tn.esprit.spring.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tn.esprit.spring.entities.Employe;
+import tn.esprit.spring.dto.EmployeDTO;
 import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.services.IEmployeService;
+import tn.esprit.spring.services.IEntrepriseService;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
- class RestControlEmployeTest {
+class RestControlEmployeTest {
 
-    @InjectMocks
-    RestControlEmploye restControlEmploye;
+   @InjectMocks
+   private RestControlEmploye restControlEmploye;
 
-    @Mock
-    IEmployeService iemployeservice;
+   @Mock
+   private IEmployeService iemployeservice;
 
-    @Mock
-    Role role; // Mocking the Role
+   @Mock
+   private IEntrepriseService ientrepriseservice;
 
-    @Test
-     void testAjouterEmploye() {
-        // Creating an Employe object with the mocked role
-        Employe employe = new Employe("Chaieb","Said" ,"Khaled.kallel@ssiiconsulting.tn", true, role);
+   private EmployeDTO employeDTO;
 
-        // Mock the behavior of iemployeservice to return the employe after calling addOrUpdateEmploye
-        when(iemployeservice.addOrUpdateEmploye(any(Employe.class))).thenReturn(employe.getId());
+   @BeforeEach
+   void setUp() {
+      employeDTO = new EmployeDTO();
+      employeDTO.setId(1);
+      employeDTO.setNom("Chaieb");
+      employeDTO.setPrenom("Said");
+      employeDTO.setEmail("khaled.kallel@ssiiconsulting.tn");
+      employeDTO.setActif(true);
+      employeDTO.setRole(Role.INGENIEUR.name());
+   }
 
-        // Execute the method under test
-        Employe returnedEmploye = restControlEmploye.ajouterEmploye(employe);
+   @Test
+   void testAjouterEmploye() {
+      Employe employe = new Employe("Chaieb", "Said", "khaled.kallel@ssiiconsulting.tn", true, Role.INGENIEUR);
+      when(iemployeservice.addOrUpdateEmploye(any(Employe.class))).thenReturn(employe.getId());
 
-        // Assertions to validate behavior
-        assertNotNull(returnedEmploye);
-        assertEquals("Chaieb", returnedEmploye.getNom());
+      EmployeDTO returnedEmployeDTO = restControlEmploye.ajouterEmploye(employeDTO);
 
-        // Verify that the addOrUpdateEmploye method was called once
-        verify(iemployeservice, times(1)).addOrUpdateEmploye(employe);
-    }
-    @Test
-     void testMettreAjourEmailByEmployeId() {
-        doNothing().when(iemployeservice).mettreAjourEmailByEmployeId(anyString(), anyInt());
+      assertNotNull(returnedEmployeDTO);
+      assertEquals("Chaieb", returnedEmployeDTO.getNom());
+      verify(iemployeservice, times(1)).addOrUpdateEmploye(any(Employe.class));
+   }
 
-        restControlEmploye.mettreAjourEmailByEmployeId("newemail@test.com", 1);
+   @Test
+   void testMettreAjourEmailByEmployeId() {
+      doNothing().when(iemployeservice).mettreAjourEmailByEmployeId(anyString(), anyInt());
 
-        verify(iemployeservice, times(1)).mettreAjourEmailByEmployeId("newemail@test.com", 1);
-    }
+      restControlEmploye.mettreAjourEmailByEmployeId("newemail@test.com", 1);
 
-    @Test
-     void testAjouterContrat() {
-        Contrat contrat = new Contrat();
-        contrat.setReference(6);
-        contrat.setSalaire(1400);
+      verify(iemployeservice, times(1)).mettreAjourEmailByEmployeId("newemail@test.com", 1);
+   }
 
-        when(iemployeservice.ajouterContrat(any(Contrat.class))).thenReturn(contrat.getReference());
+   @Test
+   void testAjouterContrat() {
+      Contrat contrat = new Contrat();
+      contrat.setReference(6);
+      contrat.setSalaire(1400);
+      when(iemployeservice.ajouterContrat(any(Contrat.class))).thenReturn(contrat.getReference());
 
-        int reference = restControlEmploye.ajouterContrat(contrat);
+      int reference = restControlEmploye.ajouterContrat(contrat);
 
-        assertEquals(6, reference);
-        verify(iemployeservice, times(1)).ajouterContrat(contrat);
-    }
+      assertEquals(6, reference);
+      verify(iemployeservice, times(1)).ajouterContrat(contrat);
+   }
 
-    @Test
-     void testDeleteEmployeById() {
-        doNothing().when(iemployeservice).deleteEmployeById(1);
+   @Test
+   void testDeleteEmployeById() {
+      doNothing().when(iemployeservice).deleteEmployeById(1);
 
-        restControlEmploye.deleteEmployeById(1);
+      restControlEmploye.deleteEmployeById(1);
 
-        verify(iemployeservice, times(1)).deleteEmployeById(1);
-    }
+      verify(iemployeservice, times(1)).deleteEmployeById(1);
+   }
 }
