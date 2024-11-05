@@ -40,7 +40,7 @@ variable "nat_gateway_az" {
 variable "role_arn" {
   description = "ARN du rôle IAM pour EKS"
   type        = string
-  default     = "arn:aws:iam::744983671605:role/LabRole"  # Valeur par défaut
+  default     = "arn:aws:iam::609242488006:role/LabRole"  # Valeur par défaut
 }
 
 /*variable "vpc_id" {
