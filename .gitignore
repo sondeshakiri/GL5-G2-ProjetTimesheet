@@ -32,7 +32,6 @@ build/
 
 ### Pipeline ###
 Jenkinsfile
-Dockerfile
 deployment.yaml
 service.yaml
-terraform/
+
