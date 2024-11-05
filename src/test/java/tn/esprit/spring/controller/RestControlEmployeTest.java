@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.dto.EmployeDTO;
+import tn.esprit.spring.dto.ContratDTO;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
@@ -29,16 +30,16 @@ class RestControlEmployeTest {
    private IEntrepriseService ientrepriseservice;
 
    private EmployeDTO employeDTO;
+   private ContratDTO contratDTO;
 
    @BeforeEach
    void setUp() {
-      employeDTO = new EmployeDTO();
-      employeDTO.setId(1);
-      employeDTO.setNom("Chaieb");
-      employeDTO.setPrenom("Said");
-      employeDTO.setEmail("khaled.kallel@ssiiconsulting.tn");
-      employeDTO.setActif(true);
-      employeDTO.setRole(Role.INGENIEUR.name());
+      employeDTO = new EmployeDTO(1, "Said", "Chaieb", "khaled.kallel@ssiiconsulting.tn", true, Role.INGENIEUR.name());
+
+      contratDTO = new ContratDTO();
+      contratDTO.setReference(6);
+      contratDTO.setSalaire(1400);
+      contratDTO.setTypeContrat("CDI");
    }
 
    @Test
@@ -67,12 +68,14 @@ class RestControlEmployeTest {
       Contrat contrat = new Contrat();
       contrat.setReference(6);
       contrat.setSalaire(1400);
+      contrat.setTypeContrat("CDI");
+
       when(iemployeservice.ajouterContrat(any(Contrat.class))).thenReturn(contrat.getReference());
 
-      int reference = restControlEmploye.ajouterContrat(contrat);
+      int reference = restControlEmploye.ajouterContrat(contratDTO);
 
       assertEquals(6, reference);
-      verify(iemployeservice, times(1)).ajouterContrat(contrat);
+      verify(iemployeservice, times(1)).ajouterContrat(any(Contrat.class));
    }
 
    @Test

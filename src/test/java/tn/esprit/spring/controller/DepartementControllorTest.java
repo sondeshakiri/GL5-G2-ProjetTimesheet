@@ -8,7 +8,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import tn.esprit.spring.dto.DepartementDTO;
 import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.DepartementService;
 import tn.esprit.spring.services.IEntrepriseService;
 

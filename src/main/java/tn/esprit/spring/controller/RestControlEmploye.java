@@ -2,15 +2,16 @@ package tn.esprit.spring.controller;
 
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.dto.EmployeDTO;
+import tn.esprit.spring.dto.ContratDTO;
 import tn.esprit.spring.entities.*;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/employe")
 public class RestControlEmploye {
 
 	private final IEmployeService iemployeservice;
@@ -22,46 +23,47 @@ public class RestControlEmploye {
 	}
 
 	// API to add an employee
-	@PostMapping("/ajouterEmployer")
+	@PostMapping("/ajouter")
 	public EmployeDTO ajouterEmploye(@RequestBody EmployeDTO employeDTO) {
 		Employe employe = mapToEntity(employeDTO);
 		iemployeservice.addOrUpdateEmploye(employe);
 		return mapToDTO(employe);
 	}
 
-	// Update email
-	@PutMapping(value = "/modifyEmail/{id}/{newemail}")
+	// Update employee email
+	@PutMapping("/modifyEmail/{id}/{newemail}")
 	public void mettreAjourEmailByEmployeId(@PathVariable("newemail") String email, @PathVariable("id") int employeId) {
 		iemployeservice.mettreAjourEmailByEmployeId(email, employeId);
 	}
 
 	// Assign employee to department
-	@PutMapping(value = "/affecterEmployeADepartement/{idemp}/{iddept}")
+	@PutMapping("/affecterEmployeADepartement/{idemp}/{iddept}")
 	public void affecterEmployeADepartement(@PathVariable("idemp") int employeId, @PathVariable("iddept") int depId) {
 		iemployeservice.affecterEmployeADepartement(employeId, depId);
 	}
 
 	// Unassign employee from department
-	@PutMapping(value = "/desaffecterEmployeDuDepartement/{idemp}/{iddept}")
+	@PutMapping("/desaffecterEmployeDuDepartement/{idemp}/{iddept}")
 	public void desaffecterEmployeDuDepartement(@PathVariable("idemp") int employeId, @PathVariable("iddept") int depId) {
 		iemployeservice.desaffecterEmployeDuDepartement(employeId, depId);
 	}
 
 	// Add contract
 	@PostMapping("/ajouterContrat")
-	public int ajouterContrat(@RequestBody Contrat contrat) {
+	public int ajouterContrat(@RequestBody ContratDTO contratDTO) {
+		Contrat contrat = mapToEntity(contratDTO);
 		iemployeservice.ajouterContrat(contrat);
 		return contrat.getReference();
 	}
 
 	// Assign contract to employee
-	@PutMapping(value = "/affecterContratAEmploye/{idcontrat}/{idemp}")
+	@PutMapping("/affecterContratAEmploye/{idcontrat}/{idemp}")
 	public void affecterContratAEmploye(@PathVariable("idcontrat") int contratId, @PathVariable("idemp") int employeId) {
 		iemployeservice.affecterContratAEmploye(contratId, employeId);
 	}
 
 	// Get employee first name by ID
-	@GetMapping(value = "getEmployePrenomById/{idemp}")
+	@GetMapping("/getEmployePrenomById/{idemp}")
 	public String getEmployePrenomById(@PathVariable("idemp") int employeId) {
 		return iemployeservice.getEmployePrenomById(employeId);
 	}
@@ -79,28 +81,28 @@ public class RestControlEmploye {
 	}
 
 	// Get total number of employees
-	@GetMapping(value = "getNombreEmployeJPQL")
+	@GetMapping("/getNombreEmployeJPQL")
 	public int getNombreEmployeJPQL() {
 		return iemployeservice.getNombreEmployeJPQL();
 	}
 
 	// Get all employee names
-	@GetMapping(value = "getAllEmployeNamesJPQL")
+	@GetMapping("/getAllEmployeNamesJPQL")
 	public List<String> getAllEmployeNamesJPQL() {
 		return iemployeservice.getAllEmployeNamesJPQL();
 	}
 
 	// Get all employees in an enterprise
-	@GetMapping(value = "getAllEmployeByEntreprise/{identreprise}")
+	@GetMapping("/getAllEmployeByEntreprise/{identreprise}")
 	public List<EmployeDTO> getAllEmployeByEntreprise(@PathVariable("identreprise") int identreprise) {
 		return iemployeservice.getAllEmployeByEntreprise(ientrepriseservice.getEntrepriseById(identreprise))
 				.stream()
 				.map(this::mapToDTO)
-				.collect(Collectors.toList());
+				.toList(); // Using `toList()` for simplicity and efficiency
 	}
 
 	// Update email with JPQL
-	@PutMapping(value = "/mettreAjourEmailByEmployeIdJPQL/{id}/{newemail}")
+	@PutMapping("/mettreAjourEmailByEmployeIdJPQL/{id}/{newemail}")
 	public void mettreAjourEmailByEmployeIdJPQL(@PathVariable("newemail") String email, @PathVariable("id") int employeId) {
 		iemployeservice.mettreAjourEmailByEmployeIdJPQL(email, employeId);
 	}
@@ -112,19 +114,21 @@ public class RestControlEmploye {
 	}
 
 	// Get salary by employee ID with JPQL
-	@GetMapping(value = "getSalaireByEmployeIdJPQL/{idemp}")
+	@GetMapping("/getSalaireByEmployeIdJPQL/{idemp}")
 	public float getSalaireByEmployeIdJPQL(@PathVariable("idemp") int employeId) {
 		return iemployeservice.getSalaireByEmployeIdJPQL(employeId);
 	}
 
 	// Get average salary by department ID
-	@GetMapping(value = "getSalaireMoyenByDepartementId/{iddept}")
+	@GetMapping("/getSalaireMoyenByDepartementId/{iddept}")
 	public Double getSalaireMoyenByDepartementId(@PathVariable("iddept") int departementId) {
 		return iemployeservice.getSalaireMoyenByDepartementId(departementId);
 	}
 
 	// Get timesheets by mission and date
-	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut, Date dateFin) {
+	@GetMapping("/getTimesheetsByMissionAndDate")
+	public List<Timesheet> getTimesheetsByMissionAndDate(@RequestParam Employe employe, @RequestParam Mission mission,
+														 @RequestParam Date dateDebut, @RequestParam Date dateFin) {
 		return iemployeservice.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
 	}
 
@@ -133,7 +137,7 @@ public class RestControlEmploye {
 	public List<EmployeDTO> getAllEmployes() {
 		return iemployeservice.getAllEmployes().stream()
 				.map(this::mapToDTO)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	// Utility methods to map between Employe and EmployeDTO
@@ -151,5 +155,18 @@ public class RestControlEmploye {
 		employe.setActif(employeDTO.isActif());
 		employe.setRole(Role.valueOf(employeDTO.getRole()));
 		return employe;
+	}
+
+	private ContratDTO mapToDTO(Contrat contrat) {
+		return new ContratDTO(contrat.getReference(), contrat.getDateDebut(), contrat.getTypeContrat(), contrat.getSalaire());
+	}
+
+	private Contrat mapToEntity(ContratDTO contratDTO) {
+		Contrat contrat = new Contrat();
+		contrat.setReference(contratDTO.getReference());
+		contrat.setDateDebut(contratDTO.getDateDebut());
+		contrat.setTypeContrat(contratDTO.getTypeContrat());
+		contrat.setSalaire(contratDTO.getSalaire());
+		return contrat;
 	}
 }

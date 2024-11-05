@@ -29,8 +29,9 @@ public class DepartementControllor {
     public List<DepartementDTO> getAllDepartements() {
         return departementService.findAll().stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());
+                .toList(); // Replaced 'collect(Collectors.toList())' with 'toList()'
     }
+
 
     // API to get a department by ID
     @GetMapping("/get/{id}")
