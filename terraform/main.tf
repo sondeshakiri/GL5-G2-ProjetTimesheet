@@ -108,18 +108,13 @@ resource "aws_security_group" "eks_cluster_sg" {
   vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
-    from_port   = 8083
-    to_port     = 8083
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 30000
-    to_port     = 30000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
 
   ingress {
     from_port   = 3306
@@ -128,12 +123,7 @@ resource "aws_security_group" "eks_cluster_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 30001
-    to_port     = 30001
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
 
   egress {
     from_port   = 0
@@ -153,8 +143,8 @@ resource "aws_security_group" "eks_worker_sg" {
   vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
-    from_port   = 8083
-    to_port     = 8083
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -166,19 +156,9 @@ resource "aws_security_group" "eks_worker_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 30001
-    to_port     = 30001
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  ingress {
-    from_port   = 30000
-    to_port     = 30000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
+
 
   egress {
     from_port   = 0
