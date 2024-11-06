@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: database
 spec:
-  type: NodePort
+  type: ClusterIP  # Internal-only access within the cluster
   selector:
     app: database_sql_timesheet
   ports:
     - protocol: TCP
-      port: 3306           # external port of the pod
-      targetPort: 3306      # internal port of the pod
-      nodePort: 30001  # Port exposé sur le nœud Kubernetes (entre 30000 et 32767)
+      port: 3306           # Service port for MySQL
+      targetPort: 3306      # MySQL port on the pod
