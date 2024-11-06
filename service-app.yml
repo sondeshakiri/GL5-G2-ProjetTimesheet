@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: timesheet-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: timesheet
   ports:
     - protocol: TCP
-      port: 8080           # external port of the pod
-      targetPort: 8080      # internal port of the pod
-      nodePort: 30000       # Port exposé sur le nœud Kubernetes (entre 30000 et 32767)
+      port: 80           # External port of the LoadBalancer
+      targetPort: 8080      # Internal port on the pod
