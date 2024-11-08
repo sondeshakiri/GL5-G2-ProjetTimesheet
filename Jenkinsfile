@@ -23,7 +23,7 @@ pipeline {
 
         stage('MVN CLEAN') {
             steps {
-                sh 'mvn clean -DargLine="--add-opens jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"'
+                sh 'mvn clean package -Ptests'
             }
         }
 
