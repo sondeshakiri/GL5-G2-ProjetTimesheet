@@ -256,4 +256,67 @@ class DepartementDtoTEST {
         assertEquals(1, departementDTO.getEmployeNames().size(), "Employe names list should have 1 entry");
         assertEquals(3, departementDTO.getMissionDescriptions().size(), "Mission descriptions list should have 3 entries");
     }
+    @Test
+    void testNullEmployeNames() {
+        DepartementDTO nullEmployeDTO = new DepartementDTO(
+                departement.getId(),
+                departement.getName(),
+                departement.getEntreprise().getName(),
+                null, // Employe names = null
+                Arrays.asList("Develop new feature", "Fix bugs")
+        );
+
+        assertNull(nullEmployeDTO.getEmployeNames(), "Employe names should be null");
+    }
+    @Test
+    void testEmptyEmployeNames() {
+        DepartementDTO emptyEmployeDTO = new DepartementDTO(
+                departement.getId(),
+                departement.getName(),
+                departement.getEntreprise().getName(),
+                Collections.emptyList(), // Liste vide
+                Arrays.asList("Develop new feature", "Fix bugs")
+        );
+
+        assertTrue(emptyEmployeDTO.getEmployeNames().isEmpty(), "Employe names should be empty");
+    }
+    @Test
+    void testSpecialCharacterNames() {
+        DepartementDTO specialCharDTO = new DepartementDTO(
+                departement.getId(),
+                "Développement & Stratégie", // Caractères spéciaux
+                departement.getEntreprise().getName(),
+                Arrays.asList("John Doe", "Jane Smith"),
+                Arrays.asList("Develop new feature", "Fix bugs")
+        );
+
+        assertEquals("Développement & Stratégie", specialCharDTO.getName(), "Department name should handle special characters correctly");
+    }
+
+    @Test
+    void testEmptyMissionDescriptions() {
+        DepartementDTO emptyMissionDTO = new DepartementDTO(
+                departement.getId(),
+                departement.getName(),
+                departement.getEntreprise().getName(),
+                Arrays.asList("John Doe", "Jane Smith"),
+                Collections.emptyList() // Liste vide
+        );
+
+        assertTrue(emptyMissionDTO.getMissionDescriptions().isEmpty(), "Mission descriptions should be empty");
+    }
+
+    @Test
+    void testNullMissionDescriptions() {
+        DepartementDTO nullMissionDTO = new DepartementDTO(
+                departement.getId(),
+                departement.getName(),
+                departement.getEntreprise().getName(),
+                Arrays.asList("John Doe", "Jane Smith"),
+                null // Mission descriptions = null
+        );
+
+        assertNull(nullMissionDTO.getMissionDescriptions(), "Mission descriptions should be null");
+    }
+
 }
