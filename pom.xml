@@ -9,7 +9,21 @@
 		<version>2.7.9</version> <!-- Updated Spring Boot version -->
 		<relativePath/>
 	</parent>
-
+<distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <name>Releases</name>
+      <url>http://localhost:8081/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus</id>
+      <name>Snapshot</name>
+      <url>http://localhost:8081/repository/maven-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  
+  
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>timesheet2021</artifactId>
 	<!--<version>${releaseVersion}</version>-->
@@ -208,4 +222,12 @@
             </plugin>
         </plugins>
     </build>
+    <servers>
+    <server>
+        <id>nexus</id>
+        <username>admin</username>
+        <password>14507329</password>
+    </server>
+</servers>
+
 </project>
