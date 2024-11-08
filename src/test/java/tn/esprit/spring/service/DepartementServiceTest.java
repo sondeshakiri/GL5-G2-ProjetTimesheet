@@ -1,11 +1,11 @@
 package tn.esprit.spring.service;
 
 import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.DTO.DepartementDTO;
 import tn.esprit.spring.entities.Departement;
@@ -86,7 +86,6 @@ public class DepartementServiceTest {
     @Test
     public void testCreateDepartement() {
         // Convert Departement entity to DTO
-        DepartementDTO departementDTO = new DepartementDTO(1, "Finance", "Tech Corp", Arrays.asList("John Doe", "Jane Doe"), Arrays.asList("Mission 1"));
 
         when(departementRepository.save(departement)).thenReturn(departement);
 
@@ -127,10 +126,10 @@ public class DepartementServiceTest {
         when(departementRepository.findById(1)).thenReturn(Optional.empty());
 
         // Appeler la méthode du service, qui devrait gérer l'absence du département
-        Departement departement = departementRepository.findById(1).orElse(null);
+        Departement departementtt = departementRepository.findById(1).orElse(null);
 
         // Convertir en DTO (ici le département est nul, donc le résultat doit être null)
-        DepartementDTO result = departementService.convertToDto(departement);
+        DepartementDTO result = departementService.convertToDto(departementtt);
 
         // Vérifier que le résultat est bien nul
         assertNull(result);  // Le DTO doit être nul si le département est absent
