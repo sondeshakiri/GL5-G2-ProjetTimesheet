@@ -13,6 +13,8 @@ import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 class DepartementDtoTEST {
 
@@ -38,7 +40,6 @@ class DepartementDtoTEST {
 
     @BeforeEach
     void setUp() {
-        // Initialize Mockito annotations
         MockitoAnnotations.openMocks(this);
 
         // Mock Entreprise behavior
@@ -70,43 +71,98 @@ class DepartementDtoTEST {
     }
 
     @Test
-    void testDepartementDTOConversion() {
-        // Verify the conversion of data
-        assertEquals(1, departementDTO.getId());
-        assertEquals("IT Department", departementDTO.getName());
-        assertEquals("TechCorp", departementDTO.getEntrepriseName());
-        assertEquals(2, departementDTO.getEmployeNames().size());
-        assertEquals(2, departementDTO.getMissionDescriptions().size());
-
-        // Verify employee names
-        assertTrue(departementDTO.getEmployeNames().contains("John Doe"));
-        assertTrue(departementDTO.getEmployeNames().contains("Jane Smith"));
-
-        // Verify mission descriptions
-        assertTrue(departementDTO.getMissionDescriptions().contains("Develop new feature"));
-        assertTrue(departementDTO.getMissionDescriptions().contains("Fix bugs"));
+    void testGetId() {
+        assertEquals(1, departementDTO.getId(), "Departement ID should be 1");
     }
 
     @Test
-    void testDepartementDTOEmptyValues() {
-        // Test with empty lists
+    void testSetId() {
+        departementDTO.setId(2);
+        assertEquals(2, departementDTO.getId(), "Departement ID should be updated to 2");
+    }
+
+    @Test
+    void testGetName() {
+        assertEquals("IT Department", departementDTO.getName(), "Departement name should be 'IT Department'");
+    }
+
+    @Test
+    void testSetName() {
+        departementDTO.setName("HR Department");
+        assertEquals("HR Department", departementDTO.getName(), "Departement name should be updated to 'HR Department'");
+    }
+
+    @Test
+    void testGetEntrepriseName() {
+        assertEquals("TechCorp", departementDTO.getEntrepriseName(), "Entreprise name should be 'TechCorp'");
+    }
+
+    @Test
+    void testSetEntrepriseName() {
+        departementDTO.setEntrepriseName("NewCorp");
+        assertEquals("NewCorp", departementDTO.getEntrepriseName(), "Entreprise name should be updated to 'NewCorp'");
+    }
+
+    @Test
+    void testGetEmployeNames() {
+        List<String> employeNames = departementDTO.getEmployeNames();
+        assertEquals(2, employeNames.size(), "Employe list size should be 2");
+        assertTrue(employeNames.contains("John Doe"), "Employe list should contain 'John Doe'");
+        assertTrue(employeNames.contains("Jane Smith"), "Employe list should contain 'Jane Smith'");
+    }
+
+    @Test
+    void testSetEmployeNames() {
+        List<String> newEmployeNames = Arrays.asList("Alice Brown", "Bob White");
+        departementDTO.setEmployeNames(newEmployeNames);
+        assertEquals(newEmployeNames, departementDTO.getEmployeNames(), "Employe names should be updated to new list");
+    }
+
+    @Test
+    void testGetMissionDescriptions() {
+        List<String> missionDescriptions = departementDTO.getMissionDescriptions();
+        assertEquals(2, missionDescriptions.size(), "Mission list size should be 2");
+        assertTrue(missionDescriptions.contains("Develop new feature"), "Mission list should contain 'Develop new feature'");
+        assertTrue(missionDescriptions.contains("Fix bugs"), "Mission list should contain 'Fix bugs'");
+    }
+
+    @Test
+    void testSetMissionDescriptions() {
+        List<String> newMissionDescriptions = Arrays.asList("Update system", "Manage database");
+        departementDTO.setMissionDescriptions(newMissionDescriptions);
+        assertEquals(newMissionDescriptions, departementDTO.getMissionDescriptions(), "Mission descriptions should be updated to new list");
+    }
+
+    @Test
+    void testEmptyDepartementDTO() {
         Departement emptyDepartement = mock(Departement.class);
         when(emptyDepartement.getId()).thenReturn(2);
         when(emptyDepartement.getName()).thenReturn("Empty Department");
-        when(emptyDepartement.getEmployes()).thenReturn(Arrays.asList());
-        when(emptyDepartement.getMissions()).thenReturn(Arrays.asList());
+        when(emptyDepartement.getEmployes()).thenReturn(Collections.emptyList());
+        when(emptyDepartement.getMissions()).thenReturn(Collections.emptyList());
 
         DepartementDTO emptyDTO = new DepartementDTO(
                 emptyDepartement.getId(),
                 emptyDepartement.getName(),
                 "Unknown",
-                Arrays.asList(),
-                Arrays.asList()
+                Collections.emptyList(),
+                Collections.emptyList()
         );
 
-        assertEquals(2, emptyDTO.getId());
-        assertEquals("Empty Department", emptyDTO.getName());
-        assertTrue(emptyDTO.getEmployeNames().isEmpty());
-        assertTrue(emptyDTO.getMissionDescriptions().isEmpty());
+        assertEquals(2, emptyDTO.getId(), "Departement ID should be 2");
+        assertEquals("Empty Department", emptyDTO.getName(), "Departement name should be 'Empty Department'");
+        assertEquals("Unknown", emptyDTO.getEntrepriseName(), "Entreprise name should be 'Unknown'");
+        assertTrue(emptyDTO.getEmployeNames().isEmpty(), "Employe names list should be empty");
+        assertTrue(emptyDTO.getMissionDescriptions().isEmpty(), "Mission descriptions list should be empty");
+    }
+
+  
+    @Test
+    void testUpdatingListsWithDifferentSizes() {
+        departementDTO.setEmployeNames(Arrays.asList("Alice Brown"));
+        departementDTO.setMissionDescriptions(Arrays.asList("Review process", "Conduct meeting", "Prepare report"));
+
+        assertEquals(1, departementDTO.getEmployeNames().size(), "Employe names list should have 1 entry");
+        assertEquals(3, departementDTO.getMissionDescriptions().size(), "Mission descriptions list should have 3 entries");
     }
 }

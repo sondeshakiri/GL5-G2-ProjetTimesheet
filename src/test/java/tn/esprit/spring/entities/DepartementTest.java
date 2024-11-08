@@ -1,4 +1,5 @@
 package tn.esprit.spring.entities;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,5 +95,14 @@ class DepartementTest {
     void testConstructor() {
         Departement dep = new Departement("Sales Department");
         assertEquals("Sales Department", dep.getName());
+    }
+
+    @Test
+    void testDefaultConstructor() {
+        Departement dep = new Departement();
+        assertNull(dep.getName(), "Name should be null for default constructor");
+        assertNull(dep.getEmployes(), "Employes should be null for default constructor");
+        assertNull(dep.getMissions(), "Missions should be null for default constructor");
+        assertNull(dep.getEntreprise(), "Entreprise should be null for default constructor");
     }
 }

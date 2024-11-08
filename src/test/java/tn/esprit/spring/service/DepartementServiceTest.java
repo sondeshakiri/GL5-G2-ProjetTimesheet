@@ -15,6 +15,7 @@ import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.services.DepartementServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -160,6 +161,119 @@ public class DepartementServiceTest {
         // Assert: Verify deleteById was called
         verify(departementRepository).deleteById(1);
     }
+    
+    @Test
+    public void testConvertToDto_NullDepartement() {
+        // Arrange: Provide a null Departement
+        Departement nullDepartement = null;
+
+        // Act: Convert the null Departement to DTO
+        DepartementDTO result = departementService.convertToDto(nullDepartement);
+
+        // Assert: Verify that the result is null
+        assertNull(result);
+    }
+
+    
+    @Test
+    public void testConvertToDto_DepartementWithNullLists() {
+        // Arrange: Create a Departement with null employes and missions
+        Departement departementWithNullLists = new Departement("Marketing");
+        departementWithNullLists.setEmployes(null);
+        departementWithNullLists.setMissions(null);
+
+        // Act: Convert to DTO
+        DepartementDTO result = departementService.convertToDto(departementWithNullLists);
+
+        // Assert: Verify that DTO has empty lists for employeNames and missionDescriptions
+        assertNotNull(result);
+        assertEquals("Marketing", result.getName());
+        assertNotNull(result.getEmployeNames());
+        assertTrue(result.getEmployeNames().isEmpty());
+        assertNotNull(result.getMissionDescriptions());
+        assertTrue(result.getMissionDescriptions().isEmpty());
+    }
+
+    @Test
+    public void testConvertToDto_DepartementWithEmptyLists() {
+        // Arrange: Create a Departement with empty employes and missions
+        Departement departementWithEmptyLists = new Departement("Operations");
+        departementWithEmptyLists.setEmployes(new ArrayList<>());
+        departementWithEmptyLists.setMissions(new ArrayList<>());
+
+        // Act: Convert to DTO
+        DepartementDTO result = departementService.convertToDto(departementWithEmptyLists);
+
+        // Assert: Verify that DTO has empty lists for employeNames and missionDescriptions
+        assertNotNull(result);
+        assertEquals("Operations", result.getName());
+        assertNotNull(result.getEmployeNames());
+        assertTrue(result.getEmployeNames().isEmpty());
+        assertNotNull(result.getMissionDescriptions());
+        assertTrue(result.getMissionDescriptions().isEmpty());
+    }
+    
+    @Test
+    public void testUpdateDepartement_Success() {
+        // Arrange: Simuler le département existant
+        Departement updatedDepartement = new Departement("HR");
+        updatedDepartement.setId(1);
+        when(departementRepository.existsById(1)).thenReturn(true);
+        when(departementRepository.save(updatedDepartement)).thenReturn(updatedDepartement);
+
+        // Act: Appeler la méthode update du service
+        Departement result = departementService.update(updatedDepartement);
+
+        // Assert: Vérifier que le département est mis à jour correctement
+        assertNotNull(result);
+        assertEquals("HR", result.getName());
+        verify(departementRepository).save(updatedDepartement);
+    }
+
+    @Test
+    public void testUpdateDepartement_Failure() {
+        // Arrange: Simuler le département non existant
+        Departement updatedDepartement = new Departement("HR");
+        updatedDepartement.setId(1);
+        when(departementRepository.existsById(1)).thenReturn(false);
+
+        // Act: Appeler la méthode update du service
+        Departement result = departementService.update(updatedDepartement);
+
+        // Assert: Vérifier que le résultat est null car le département n'existe pas
+        assertNull(result);
+        verify(departementRepository, never()).save(updatedDepartement); // La méthode save ne doit pas être appelée
+    }
+
+    @Test
+    public void testFindById_Found() {
+        // Arrange: Simuler un département retourné par le repository
+        Departement departement1 = new Departement("Finance");
+        departement1.setId(1);
+        when(departementRepository.findById(1)).thenReturn(Optional.of(departement1));
+
+        // Act: Appeler la méthode findById du service
+        Departement result = departementService.findById(1);
+
+        // Assert: Vérifier que le département est trouvé
+        assertNotNull(result);
+        assertEquals("Finance", result.getName());
+        verify(departementRepository).findById(1);
+    }
+
+    @Test
+    public void testFindById_NotFound() {
+        // Arrange: Simuler un département non trouvé
+        when(departementRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Act: Appeler la méthode findById du service
+        Departement result = departementService.findById(1);
+
+        // Assert: Vérifier que le résultat est null
+        assertNull(result);
+        verify(departementRepository).findById(1);
+    }
+
 
 
 }
