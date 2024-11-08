@@ -27,14 +27,14 @@ public class DepartementControllorTest {
     private Departement departement2;
 
     @BeforeEach
-    private void setUp() {
+    public void setUp() {
     	MockitoAnnotations.openMocks(this);
         departement1 = new Departement("Informatique");
         departement2 = new Departement("RH");
     }
 
     @Test
-    private void testGetAllDepartements() {
+    public void testGetAllDepartements() {
         List<Departement> departements = Arrays.asList(departement1, departement2);
         when(departementService.findAll()).thenReturn(departements);
 
@@ -45,7 +45,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testGetDepartementById() {
+    public void testGetDepartementById() {
         when(departementService.findById(1)).thenReturn(departement1);
 
         Departement result = departementController.getDepartementById(1).getBody();
@@ -53,10 +53,16 @@ public class DepartementControllorTest {
         assertEquals("Informatique", result.getName());
     }
 
+    @Test
+    public void testGetDepartementByIdNotFound() {
+        when(departementService.findById(99)).thenReturn(null);
 
+        Departement result = departementController.getDepartementById(99).getBody();
+        assertNull(result);
+    }
 
     @Test
-    private void testCreateDepartement() {
+    public void testCreateDepartement() {
         when(departementService.save(departement1)).thenReturn(departement1);
 
         Departement result = departementController.createDepartement(departement1);
@@ -65,7 +71,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testCreateDepartementWithEmptyName() {
+    public void testCreateDepartementWithEmptyName() {
         Departement invalidDepartement = new Departement(""); // Nom vide
 
         Departement result = departementController.createDepartement(invalidDepartement);
@@ -73,7 +79,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testCreateDepartementWithNullName() {
+    public void testCreateDepartementWithNullName() {
         Departement invalidDepartement = new Departement(null); // Nom null
 
         Departement result = departementController.createDepartement(invalidDepartement);
@@ -81,7 +87,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testUpdateDepartement() {
+    public void testUpdateDepartement() {
         departement1.setId(1);
         when(departementService.update(departement1)).thenReturn(departement1);
 
@@ -91,7 +97,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testUpdateDepartementNotFound() {
+    public void testUpdateDepartementNotFound() {
         departement1.setId(99);
         when(departementService.update(departement1)).thenReturn(null);
 
@@ -100,13 +106,13 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testDeleteDepartement() {
+    public void testDeleteDepartement() {
         departementController.deleteDepartement(1);
         verify(departementService, times(1)).delete(1); // Vérifie que la méthode delete a été appelée une fois
     }
 
     @Test
-    private void testDeleteDepartementNotFound() {
+    public void testDeleteDepartementNotFound() {
         doThrow(new RuntimeException("Departement not found")).when(departementService).delete(99);
 
         try {
@@ -118,7 +124,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testCreateDepartementWithExistingName() {
+    public void testCreateDepartementWithExistingName() {
         // Simuler qu'un département avec le même nom existe déjà
         when(departementService.save(departement1)).thenThrow(new RuntimeException("Departement with this name already exists"));
 
@@ -131,7 +137,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    private void testUpdateDepartementWithExistingName() {
+    public void testUpdateDepartementWithExistingName() {
         // Simuler que le nom du département mis à jour existe déjà
         departement1.setName("Informatique");
         when(departementService.update(departement1)).thenThrow(new RuntimeException("Departement with this name already exists"));
@@ -144,6 +150,13 @@ public class DepartementControllorTest {
         }
     }
 
+    @Test
+    public void testDeleteDepartementWithNonexistentId() {
+        when(departementService.findById(99)).thenReturn(null);
+
+        Departement result = departementController.getDepartementById(99).getBody();
+        assertNull(result); // Le département n'existe pas, il doit être nul
+    }
 
     
 }
