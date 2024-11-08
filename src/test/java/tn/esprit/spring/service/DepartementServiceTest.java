@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DepartementServiceTest {
+ class DepartementServiceTest {
 
     @Mock
     private DepartementRepository departementRepository;
@@ -37,7 +37,7 @@ public class DepartementServiceTest {
     private Departement departement;
 
     @BeforeEach
-    public void setup() {
+     void setup() {
         // Initialize Departement entity and its relationships for testing
         departement = new Departement("Finance");
         Entreprise entreprise = new Entreprise();
@@ -59,7 +59,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testFindAllDepartements() {
+     void testFindAllDepartements() {
         // Arrange: Prépare une liste de départements à retourner par le dépôt
         Departement departement1 = new Departement("Finance");
         departement1.setId(1);
@@ -85,7 +85,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testCreateDepartement() {
+     void testCreateDepartement() {
         // Convert Departement entity to DTO
 
         when(departementRepository.save(departement)).thenReturn(departement);
@@ -98,7 +98,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testCreateDepartement_SaveFailed() {
+     void testCreateDepartement_SaveFailed() {
         Departement departementToCreate = new Departement("HR");
 
         when(departementRepository.save(departementToCreate)).thenThrow(new RuntimeException("Database error"));
@@ -111,7 +111,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testGetDepartementWithRelations() {
+     void testGetDepartementWithRelations() {
 
         DepartementDTO result = departementService.convertToDto(departement);
 
@@ -122,7 +122,7 @@ public class DepartementServiceTest {
         assertEquals("Tech Corp", result.getEntrepriseName());
     }
     @Test
-    public void testGetDepartementWithRelations_NotFound() {
+     void testGetDepartementWithRelations_NotFound() {
         // Simuler un département non trouvé dans le repository
         when(departementRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -154,7 +154,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testDeleteDepartement() {
+     void testDeleteDepartement() {
         // Act: Call the delete method
         departementService.delete(1);
 
@@ -163,7 +163,7 @@ public class DepartementServiceTest {
     }
     
     @Test
-    public void testConvertToDto_NullDepartement() {
+     void testConvertToDto_NullDepartement() {
         // Arrange: Provide a null Departement
         Departement nullDepartement = null;
 
@@ -176,7 +176,7 @@ public class DepartementServiceTest {
 
     
     @Test
-    public void testConvertToDto_DepartementWithNullLists() {
+     void testConvertToDto_DepartementWithNullLists() {
         // Arrange: Create a Departement with null employes and missions
         Departement departementWithNullLists = new Departement("Marketing");
         departementWithNullLists.setEmployes(null);
@@ -195,7 +195,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testConvertToDto_DepartementWithEmptyLists() {
+     void testConvertToDto_DepartementWithEmptyLists() {
         // Arrange: Create a Departement with empty employes and missions
         Departement departementWithEmptyLists = new Departement("Operations");
         departementWithEmptyLists.setEmployes(new ArrayList<>());
@@ -214,7 +214,7 @@ public class DepartementServiceTest {
     }
     
     @Test
-    public void testUpdateDepartement_Success() {
+     void testUpdateDepartement_Success() {
         // Arrange: Simuler le département existant
         Departement updatedDepartement = new Departement("HR");
         updatedDepartement.setId(1);
@@ -246,7 +246,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testFindById_Found() {
+     void testFindById_Found() {
         // Arrange: Simuler un département retourné par le repository
         Departement departement1 = new Departement("Finance");
         departement1.setId(1);
@@ -262,7 +262,7 @@ public class DepartementServiceTest {
     }
 
     @Test
-    public void testFindById_NotFound() {
+     void testFindById_NotFound() {
         // Arrange: Simuler un département non trouvé
         when(departementRepository.findById(1)).thenReturn(Optional.empty());
 

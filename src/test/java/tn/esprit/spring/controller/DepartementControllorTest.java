@@ -18,7 +18,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DepartementControllorTest {
+ class DepartementControllorTest {
 
     @InjectMocks
     private DepartementControllor departementController;
@@ -30,7 +30,7 @@ public class DepartementControllorTest {
     private Departement departement2;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
     	MockitoAnnotations.openMocks(this);
         departement1 = new Departement("Informatique");
         departement2 = new Departement("RH");
@@ -48,7 +48,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testGetDepartementById() {
+     void testGetDepartementById() {
         when(departementService.findById(1)).thenReturn(departement1);
 
         Departement result = departementController.getDepartementById(1).getBody();
@@ -72,7 +72,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testCreateDepartement() {
+     void testCreateDepartement() {
         when(departementService.save(departement1)).thenReturn(departement1);
 
         Departement result = departementController.createDepartement(departement1);
@@ -81,7 +81,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testCreateDepartementWithEmptyName() {
+     void testCreateDepartementWithEmptyName() {
         Departement invalidDepartement = new Departement(""); // Nom vide
 
         Departement result = departementController.createDepartement(invalidDepartement);
@@ -89,7 +89,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testCreateDepartementWithNullName() {
+    void testCreateDepartementWithNullName() {
         Departement invalidDepartement = new Departement(null); // Nom null
 
         Departement result = departementController.createDepartement(invalidDepartement);
@@ -97,7 +97,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testUpdateDepartement() {
+  void testUpdateDepartement() {
         departement1.setId(1);
         when(departementService.update(departement1)).thenReturn(departement1);
 
@@ -107,7 +107,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testUpdateDepartementNotFound() {
+     void testUpdateDepartementNotFound() {
         departement1.setId(99);
         when(departementService.update(departement1)).thenReturn(null);
 
@@ -134,7 +134,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testCreateDepartementWithExistingName() {
+     void testCreateDepartementWithExistingName() {
         // Simuler qu'un département avec le même nom existe déjà
         when(departementService.save(departement1)).thenThrow(new RuntimeException("Departement with this name already exists"));
 
@@ -147,7 +147,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testUpdateDepartementWithExistingName() {
+     void testUpdateDepartementWithExistingName() {
         // Simuler que le nom du département mis à jour existe déjà
         departement1.setName("Informatique");
         when(departementService.update(departement1)).thenThrow(new RuntimeException("Departement with this name already exists"));
@@ -161,7 +161,7 @@ public class DepartementControllorTest {
     }
 
     @Test
-    public void testDeleteDepartementWithNonexistentId() {
+     void testDeleteDepartementWithNonexistentId() {
         when(departementService.findById(99)).thenReturn(null);
 
         Departement result = departementController.getDepartementById(99).getBody();
