@@ -6,12 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.services.DepartementService;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,12 +58,19 @@ public class DepartementControllorTest {
         assertEquals("Informatique", result.getName());
     }
 
+
+    
     @Test
-    public void testGetDepartementByIdNotFound() {
+    void testGetDepartementByIdNotFound() {
+        // Arrange: Mock the service to return null for a non-existent department
         when(departementService.findById(99)).thenReturn(null);
 
-        Departement result = departementController.getDepartementById(99).getBody();
-        assertNull(result);
+        // Act: Call the GET method on the controller
+        ResponseEntity<Departement> response = departementController.getDepartementById(99);
+
+        // Assert: Check that the response status is NOT_FOUND and body is null
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
@@ -151,13 +162,7 @@ public class DepartementControllorTest {
         }
     }
 
-    @Test
-    public void testDeleteDepartementWithNonexistentId() {
-        when(departementService.findById(99)).thenReturn(null);
 
-        Departement result = departementController.getDepartementById(99).getBody();
-        assertNull(result); // Le département n'existe pas, il doit être nul
-    }
-
+  
     
 }
