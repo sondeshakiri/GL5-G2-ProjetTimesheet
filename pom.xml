@@ -12,6 +12,9 @@
 
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>timesheet2021</artifactId>
+	<!--<version>${releaseVersion}</version>-->
+	<version>${snapshotVersion}</version>
+
 	<name>timesheet2021</name>
 	<description>timesheet2021</description>
 	<properties>
@@ -205,17 +208,6 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>snapshot</id>
-			<properties>
-				<version>${snapshotVersion}</version>
-			</properties>
-		</profile>
-		<profile>
-			<id>release</id>
-			<properties>
-				<version>${releaseVersion}</version>
-			</properties>
-		</profile>
+
 	</profiles>
 </project>
