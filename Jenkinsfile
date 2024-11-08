@@ -7,8 +7,7 @@ pipeline {
         awsSessionTokenId = 'aws-session-token' // Jenkins credential ID for AWS Session Token
         awsRegion = 'us-east-1' // Replace with your AWS region
         eksCluster = 'mykubernetes' // Replace with your EKS cluster name
-        snapshotVersion = '3.0.1-SNAPSHOT'
-        releaseVersion = '3.0.0'
+
     }
 
     agent any
