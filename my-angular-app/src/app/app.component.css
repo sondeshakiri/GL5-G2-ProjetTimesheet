@@ -1,0 +1,29 @@
+/* app.component.css */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Assure que le conteneur prend toute la hauteur de la fenêtre */
+    font-family: Arial, sans-serif; /* Police de caractères pour l'application */
+    background-color: #f4f4f4; /* Couleur de fond douce */
+}
+
+.app-header {
+    background-color: #007bff; /* Couleur d'arrière-plan de l'en-tête */
+    color: white; /* Couleur du texte de l'en-tête */
+    padding: 20px; /* Espacement à l'intérieur de l'en-tête */
+    text-align: center; /* Centre le texte dans l'en-tête */
+}
+
+main {
+    flex: 1; /* Permet à la balise main de s'étendre pour remplir l'espace disponible */
+    padding: 20px; /* Espacement à l'intérieur de la section principale */
+    background-color: white; /* Couleur de fond pour le contenu principal */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une légère ombre au contenu principal */
+    border-radius: 8px; /* Coins arrondis pour le contenu principal */
+}
+
+/* Optionnel : styles pour les h1 */
+h1 {
+    margin: 0; /* Supprime les marges par défaut */
+    font-size: 2rem; /* Taille de la police du titre */
+}
