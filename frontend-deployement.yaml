@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-angular
+  labels:
+    app: frontend-angular
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-angular
+  template:
+    metadata:
+      labels:
+        app: frontend-angular
+    spec:
+      containers:
+        - name: frontend-angular-container
+          image: sondeshakiri320/angular-frontend:latest
+          ports:
+            - containerPort: 4200
+          env:
+            - name: BACKEND_URL
+              value: "http://ab08390725c3b41389b40324ea311919-1962932689.us-east-1.elb.amazonaws.com:8085/SpringMVC/servlet/departements"
