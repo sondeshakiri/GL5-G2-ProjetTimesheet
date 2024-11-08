@@ -8,32 +8,6 @@
         <version>2.7.15</version>
         <relativePath/> <!-- Utiliser le parent de Spring Boot -->
     </parent>
-<profiles>
-    <!-- Profil pour déployer une version stable (Release) -->
-    <profile>
-        <id>release</id>
-        <properties>
-            <deployment.repository.url>http://nexus:8081/repository/maven-releases/</deployment.repository.url>
-            <deployment.repository.id>nexus-releases</deployment.repository.id>
-        </properties>
-    </profile>
-
-    <!-- Profil pour déployer une version de développement (Snapshot) -->
-    <profile>
-        <id>snapshot</id>
-        <properties>
-            <deployment.repository.url>http://nexus:8081/repository/maven-snapshots/</deployment.repository.url>
-            <deployment.repository.id>nexus-snapshots</deployment.repository.id>
-        </properties>
-    </profile>
-</profiles>
-<servers>
-    <server>
-        <id>nexus-snapshots</id>
-        <username>admin</username>
-        <password>14507329</password>
-    </server>
-</servers>
 
     <groupId>tn.esprit.spring</groupId>
     <artifactId>timesheet2021</artifactId>
@@ -70,12 +44,11 @@
             <optional>true</optional>
         </dependency>
 
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.33</version> <!-- Use the latest version -->
-</dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version> <!-- Use the latest version -->
+        </dependency>
 
         <!-- Lombok -->
         <dependency>
@@ -230,4 +203,32 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Profil pour déployer une version stable (Release) -->
+        <profile>
+            <id>release</id>
+            <properties>
+                <deployment.repository.url>http://nexus:8081/repository/maven-releases/</deployment.repository.url>
+                <deployment.repository.id>nexus-releases</deployment.repository.id>
+            </properties>
+        </profile>
+
+        <!-- Profil pour déployer une version de développement (Snapshot) -->
+        <profile>
+            <id>snapshot</id>
+            <properties>
+                <deployment.repository.url>http://nexus:8081/repository/maven-snapshots/</deployment.repository.url>
+                <deployment.repository.id>nexus-snapshots</deployment.repository.id>
+            </properties>
+        </profile>
+    </profiles>
+
+    <servers>
+        <server>
+            <id>nexus-snapshots</id>
+            <username>admin</username>
+            <password>14507329</password>
+        </server>
+    </servers>
 </project>
