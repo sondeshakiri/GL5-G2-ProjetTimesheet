@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import tn.esprit.spring.DTO.DepartementDTO;
+
+import tn.esprit.spring.dto.DepartementDTO;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Employe;

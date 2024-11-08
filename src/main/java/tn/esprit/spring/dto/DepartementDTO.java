@@ -1,4 +1,4 @@
-package tn.esprit.spring.DTO;
+package tn.esprit.spring.dto;
 
 import java.io.Serializable;
 import java.util.List;
