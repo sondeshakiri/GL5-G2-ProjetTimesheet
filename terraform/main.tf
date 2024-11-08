@@ -11,14 +11,26 @@ resource "aws_vpc" "my_vpc" {
   }
 }
 
-# Public Subnet (for NAT gateway)
-resource "aws_subnet" "public_subnet" {
+# Public Subnet (for NAT gateway and load balancer)
+resource "aws_subnet" "public_subnet1" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "10.0.0.0/24"
   map_public_ip_on_launch = true
+  availability_zone = "us-east-1a"
 
   tags = {
-    Name = "Public-Subnet"
+    Name = "Public-Subnet1"
+  }
+}
+# Public Subnet (for load balancer)
+resource "aws_subnet" "public_subnet2" {
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = "10.0.3.0/24"
+  map_public_ip_on_launch = true
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "Public-Subnet2"
   }
 }
 
@@ -59,7 +71,7 @@ resource "aws_eip" "nat_eip" {
 
 resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public_subnet.id
+  subnet_id     = aws_subnet.public_subnet1.id
 
   tags = {
     Name = "Main-NAT-Gateway"
@@ -96,8 +108,12 @@ resource "aws_route_table_association" "private_subnet_2_assoc" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-resource "aws_route_table_association" "public_subnet_assoc" {
-  subnet_id      = aws_subnet.public_subnet.id
+resource "aws_route_table_association" "public_subnet1_assoc" {
+  subnet_id      = aws_subnet.public_subnet1.id
+  route_table_id = aws_route_table.public_rt.id
+}
+resource "aws_route_table_association" "public_subnet2_assoc" {
+  subnet_id      = aws_subnet.public_subnet2.id
   route_table_id = aws_route_table.public_rt.id
 }
 
@@ -108,8 +124,8 @@ resource "aws_security_group" "eks_cluster_sg" {
   vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -131,40 +147,7 @@ resource "aws_security_group" "eks_cluster_sg" {
   }
 }
 
-resource "aws_security_group" "eks_worker_sg" {
-  name        = "eks-worker-sg-${var.cluster_name}"
-  description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = aws_vpc.my_vpc.id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-
-
-
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "eks-worker-sg-${var.cluster_name}"
-  }
-}
 
 # EKS Cluster
 resource "aws_eks_cluster" "my_cluster" {
