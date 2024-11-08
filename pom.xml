@@ -170,6 +170,10 @@
 
 		<profile>
 			<id>test-coverage</id>
+			<properties>
+				<!-- Activate 'test' profile for tests -->
+				<spring.profiles.active>test</spring.profiles.active>
+			</properties>
 			<build>
 				<plugins>
 					<!-- Jacoco Plugin for Code Coverage -->
