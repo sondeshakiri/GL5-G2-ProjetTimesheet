@@ -1,61 +1,75 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Parent POM for Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.15</version>
         <relativePath/> <!-- Utiliser le parent de Spring Boot -->
     </parent>
-<profiles>
-    <!-- Profil pour déployer une version stable (Release) -->
-    <profile>
-        <id>release</id>
-        <properties>
-            <deployment.repository.url>http://nexus:8081/repository/maven-releases/</deployment.repository.url>
-            <deployment.repository.id>nexus-releases</deployment.repository.id>
-        </properties>
-    </profile>
 
-    <!-- Profil pour déployer une version de développement (Snapshot) -->
-    <profile>
-        <id>snapshot</id>
-        <properties>
-            <deployment.repository.url>http://nexus:8081/repository/maven-snapshots/</deployment.repository.url>
-            <deployment.repository.id>nexus-snapshots</deployment.repository.id>
-        </properties>
-    </profile>
-</profiles>
-
+    <!-- Project Information -->
     <groupId>tn.esprit.spring</groupId>
     <artifactId>timesheet2021</artifactId>
     <version>3.0-SNAPSHOT</version>
     <name>timesheet2021</name>
     <description>Timesheet Management Application</description>
 
+    <!-- Properties Section for versioning and Java compatibility -->
     <properties>
         <java.version>1.8</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
     </properties>
 
+    <!-- Profiles Section for different deployment environments -->
+    <profiles>
+        <!-- Profile for stable (Release) version deployment -->
+        <profile>
+            <id>release</id>
+            <properties>
+                <deployment.repository.url>http://nexus:8081/repository/maven-releases/</deployment.repository.url>
+                <deployment.repository.id>nexus-releases</deployment.repository.id>
+            </properties>
+        </profile>
+
+        <!-- Profile for snapshot version deployment -->
+        <profile>
+            <id>snapshot</id>
+            <properties>
+                <deployment.repository.url>http://nexus:8081/repository/maven-snapshots/</deployment.repository.url>
+                <deployment.repository.id>nexus-snapshots</deployment.repository.id>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- Servers Section for credentials (usually stored in settings.xml for security) -->
+    <servers>
+        <server>
+            <id>nexus-snapshots</id>
+            <username>admin</username> <!-- Use actual credentials -->
+            <password>14507329</password> <!-- Use actual credentials -->
+        </server>
+    </servers>
+
+    <!-- Dependencies Section for including various libraries -->
     <dependencies>
         <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -63,14 +77,14 @@
             <optional>true</optional>
         </dependency>
 
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.33</version> <!-- Use the latest version -->
-</dependency>
+        <!-- MySQL Connector Dependency -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
 
-
-        <!-- Lombok -->
+        <!-- Lombok Dependency for reducing boilerplate code -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -78,44 +92,31 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSF Dependencies -->
+        <!-- JSF Dependencies for managing Java Server Faces -->
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
             <version>2.2.12</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
             <version>2.2.12</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>9.0.78</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.ocpsoft.rewrite</groupId>
-            <artifactId>rewrite-servlet</artifactId>
-            <version>3.4.1.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ocpsoft.rewrite</groupId>
-            <artifactId>rewrite-integration-faces</artifactId>
-            <version>3.4.1.Final</version>
-        </dependency>
-
+        <!-- Primefaces for UI Components -->
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>8.0</version>
         </dependency>
 
-        <!-- Spring Boot Test (Includes JUnit, Mockito, AssertJ) -->
+        <!-- Testing Dependencies (JUnit, Mockito, AssertJ) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -127,39 +128,30 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Mockito Core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Mockito JUnit Integration -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -168,7 +160,9 @@
         </dependency>
     </dependencies>
 
+    <!-- Build Section for Maven Plugins -->
     <build>
+        <!-- Plugin Management for compiler configuration -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -184,7 +178,9 @@
             </plugins>
         </pluginManagement>
 
+        <!-- Plugins for Code Coverage and Packaging -->
         <plugins>
+            <!-- JaCoCo plugin for code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -205,11 +201,13 @@
                 </executions>
             </plugin>
 
+            <!-- Spring Boot Maven Plugin for packaging executable JARs -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Surefire plugin for running tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -223,4 +221,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
