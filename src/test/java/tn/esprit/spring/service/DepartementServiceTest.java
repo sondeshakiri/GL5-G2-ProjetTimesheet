@@ -140,7 +140,7 @@ import static org.mockito.Mockito.*;
 
 
     @Test
-    public void testUpdateDepartement_NotFound() {
+     void testUpdateDepartement_NotFound() {
         // Arrange: Simulate the department not being found in the repository
         Departement updatedDepartement = new Departement("HR");
         updatedDepartement.setId(1);
@@ -231,7 +231,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-    public void testUpdateDepartement_Failure() {
+     void testUpdateDepartement_Failure() {
         // Arrange: Simuler le département non existant
         Departement updatedDepartement = new Departement("HR");
         updatedDepartement.setId(1);

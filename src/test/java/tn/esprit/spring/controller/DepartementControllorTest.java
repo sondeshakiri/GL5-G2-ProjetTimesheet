@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    public void testGetAllDepartements() {
+     void testGetAllDepartements() {
         List<Departement> departements = Arrays.asList(departement1, departement2);
         when(departementService.findAll()).thenReturn(departements);
 
@@ -116,13 +116,13 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    public void testDeleteDepartement() {
+     void testDeleteDepartement() {
         departementController.deleteDepartement(1);
         verify(departementService, times(1)).delete(1); // Vérifie que la méthode delete a été appelée une fois
     }
 
     @Test
-    public void testDeleteDepartementNotFound() {
+     void testDeleteDepartementNotFound() {
         doThrow(new RuntimeException("Departement not found")).when(departementService).delete(99);
 
         try {
