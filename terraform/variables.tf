@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "cluster_name" {
   description = "Nom du cluster EKS"
   type        = string
-  default     = "mykubernetes" 
+  default     = "mycluster" 
 }
 
 variable "subnet_ids" {
@@ -25,7 +25,7 @@ variable "role_arn" {
 variable "vpc_id" {
   description = "L'ID du VPC pour le cluster EKS"
   type        = string
-  default     = "vpc-081470f81281db969" 
+  default     = "vpc-0c40e65bce9afac61" 
 }
 
 variable "vpc_cidr" {
