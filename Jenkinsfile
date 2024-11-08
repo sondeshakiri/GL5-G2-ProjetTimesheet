@@ -40,7 +40,7 @@ pipeline {
                 sh 'mvn clean verify -Ptests'
             }
         }
-    stage('MVN SONARQUBE'){
+    /*stage('MVN SONARQUBE'){
                 steps {
                     sh 'mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062."'
 
@@ -48,7 +48,7 @@ pipeline {
 
                 }
 
-        /*stage('PUBLISH SNAPSHOT TO NEXUS') {
+        stage('PUBLISH SNAPSHOT TO NEXUS') {
             steps {
                 sh """
                     mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
@@ -85,7 +85,7 @@ pipeline {
             }
         }
 
-        stage('REPORT METRICS') {
+        /*stage('REPORT METRICS') {
             steps {
                 script {
                     // Example: Push a custom metric to Prometheus Pushgateway
@@ -94,7 +94,7 @@ pipeline {
                     """
                 }
             }
-        }
+        }*/
 
 
         // Terraform stages
