@@ -9,7 +9,6 @@ import tn.esprit.spring.services.DepartementService;
 
 import java.util.List;
 
-@CrossOrigin(origins ="*")
 @RestController
 @RequestMapping("/departements")
 public class DepartementControllor {
