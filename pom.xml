@@ -12,7 +12,7 @@
 
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>timesheet2021</artifactId>
-	<version>3.0.0-SNAPSHOT</version> <!-- Ensure this matches the release or snapshot version -->
+	<version>${releaseVersion}</version> <!-- Use releaseVersion here -->
 	<name>timesheet2021</name>
 	<description>timesheet2021</description>
 	<properties>
