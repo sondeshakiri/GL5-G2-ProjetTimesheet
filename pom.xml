@@ -48,6 +48,11 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 
 		<!-- Testing Dependencies -->
@@ -141,6 +146,11 @@
 	<profiles>
 		<profile>
 			<id>tests</id>
+			<properties>
+				<!-- Activate 'test' profile for tests -->
+				<spring.profiles.active>test</spring.profiles.active>
+			</properties>
+
 			<build>
 				<plugins>
 					<!-- Maven Surefire Plugin for Tests -->
