@@ -41,15 +41,15 @@ pipeline {
             }
         }
 
-        stage('PUBLISH SNAPSHOT TO NEXUS') {
+        /*stage('PUBLISH SNAPSHOT TO NEXUS') {
             steps {
                 sh """
                     mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
                 """
             }
-        }
+        }*/
 
-        /* Uncomment this stage if you want to publish releases
+        /* Uncomment this stage if you want to publish releases*/
         stage('PUBLISH RELEASE TO NEXUS') {
             steps {
                 sh """
@@ -57,7 +57,7 @@ pipeline {
                 """
             }
         }
-        */
+
 
         stage('BUILDING OUR IMAGE') {
             steps {
