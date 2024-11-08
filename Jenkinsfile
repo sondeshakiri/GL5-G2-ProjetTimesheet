@@ -1,5 +1,4 @@
 pipeline {
-
     environment {
         registry = "msaidc/timesheet"
         registryCredential = 'dockerCred'
@@ -8,6 +7,8 @@ pipeline {
         awsSessionTokenId = 'aws-session-token' // Jenkins credential ID for AWS Session Token
         awsRegion = 'us-east-1' // Replace with your AWS region
         eksCluster = 'mykubernetes' // Replace with your EKS cluster name
+        snapshotVersion = '3.0.1-SNAPSHOT'
+        releaseVersion = '3.0.0'
     }
 
     agent any
@@ -27,34 +28,38 @@ pipeline {
             }
         }
 
-                stage('ARTIFACT CONSTRUCTION') {
-                    steps {
-                        echo 'ARTIFACT CONSTRUCTION...'
-                        sh 'mvn package -Ptests'
-                    }
-                }
+        stage('ARTIFACT CONSTRUCTION') {
+            steps {
+                echo 'ARTIFACT CONSTRUCTION...'
+                sh 'mvn package -Ptests'
+            }
+        }
 
-                stage('UNIT TESTS and Coverage') {
-                    steps {
-                        echo 'Launching Unit Tests...'
-                        sh 'mvn clean verify -Ptests'
-                    }
-                }
-            stage('PUBLISH SNAPSHOT TO NEXUS') {
-                    steps {
-                             sh """
-                            mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
-                        """
-                    }
-                }
+        stage('UNIT TESTS and Coverage') {
+            steps {
+                echo 'Launching Unit Tests...'
+                sh 'mvn clean verify -Ptests'
+            }
+        }
 
-                /*stage('PUBLISH RELEASE TO NEXUS') {
-                    steps {
-                          sh """
-                            mvn deploy -DaltDeploymentRepository=releaseRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-releases/ -Ptests
-                        """
-                    }
-                }*/
+        stage('PUBLISH SNAPSHOT TO NEXUS') {
+            steps {
+                sh """
+                    mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
+                """
+            }
+        }
+
+        /* Uncomment this stage if you want to publish releases
+        stage('PUBLISH RELEASE TO NEXUS') {
+            steps {
+                sh """
+                    mvn deploy -DaltDeploymentRepository=releaseRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-releases/ -Ptests
+                """
+            }
+        }
+        */
+
         stage('BUILDING OUR IMAGE') {
             steps {
                 script {
@@ -72,9 +77,9 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
-stage('REPORT METRICS') {
+        stage('REPORT METRICS') {
             steps {
                 script {
                     // Example: Push a custom metric to Prometheus Pushgateway
@@ -84,7 +89,8 @@ stage('REPORT METRICS') {
                 }
             }
         }
-         stage('VERIFY GRAFANA') {
+
+        stage('VERIFY GRAFANA') {
             steps {
                 echo 'Checking Grafana availability...'
                 script {
@@ -97,8 +103,9 @@ stage('REPORT METRICS') {
                 }
             }
         }
+
         // Terraform stages
-stage('Terraform Init') {
+        stage('Terraform Init') {
             steps {
                 dir('terraform') {
                     withCredentials([
@@ -190,6 +197,7 @@ stage('Terraform Init') {
                 '''
             }
         }
+    }
 
     post {
         success {
@@ -201,6 +209,6 @@ stage('Terraform Init') {
             mail to: 'chaiebsaid.01@gmail.com',
                  subject: "Jenkins Pipeline Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                  body: "The Jenkins pipeline ${env.JOB_NAME} has failed.\n\nBuild URL: ${env.BUILD_URL}"
-        }*/
+        }
     }
 }
