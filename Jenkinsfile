@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('CHECKOUT GIT') {
             steps {
-                git branch: 'said',
+                git branch: 'feature/said',
                     credentialsId: 'accessGit',
                     url: 'https://github.com/sondeshakiri/GL5-G2-ProjetTimesheet.git'
             }
