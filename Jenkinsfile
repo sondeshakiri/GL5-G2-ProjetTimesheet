@@ -40,6 +40,13 @@ pipeline {
                 sh 'mvn clean verify -Ptests'
             }
         }
+    stage('MVN SONARQUBE'){
+                steps {
+                    sh 'mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062."'
+
+                    }
+
+                }
 
         /*stage('PUBLISH SNAPSHOT TO NEXUS') {
             steps {
@@ -89,19 +96,6 @@ pipeline {
             }
         }
 
-        stage('VERIFY GRAFANA') {
-            steps {
-                echo 'Checking Grafana availability...'
-                script {
-                    def response = sh(script: "curl -o /dev/null -s -w \"%{http_code}\" http://grafana:10000", returnStdout: true).trim()
-                    if (response == '200') {
-                        echo 'Grafana is running and accessible on port 10000.'
-                    } else {
-                        error("Grafana is not accessible on port 10000. Response code: ${response}")
-                    }
-                }
-            }
-        }
 
         // Terraform stages
         stage('Terraform Init') {
