@@ -27,40 +27,35 @@ pipeline {
             }
         }
 
-        stage('ARTIFACT CONSTRUCTION') {
-            steps {
-                echo 'ARTIFACT CONSTRUCTION...'
-                sh 'mvn package'
-            }
-        }
+                stage('ARTIFACT CONSTRUCTION') {
+                    steps {
+                        echo 'ARTIFACT CONSTRUCTION...'
+                        sh 'mvn package -Ptests'
+                    }
+                }
 
-        stage('UNIT TESTS and Coverage') {
-            steps {
-                echo 'Launching Unit Tests...'
-                sh 'mvn clean verify -Ptest-coverage'
-            }
-        }
+                stage('UNIT TESTS and Coverage') {
+                    steps {
+                        echo 'Launching Unit Tests...'
+                        sh 'mvn clean verify -Ptests'
+                    }
+                }
+            stage('PUBLISH SNAPSHOT TO NEXUS') {
+                    steps {
+                             sh """
+                            mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
+                        """
+                    }
+                }
 
-        stage('MVN SONARQUBE') {
-            steps {
-                sh """
-                    mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062." \
-                    -Dsonar.java.coveragePlugin=jacoco \
-                    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                """
-            }
-        }
-
-        stage('PUBLISH TO NEXUS') {
-            steps {
-                sh """
-                    mvn -X deploy \
-                    -DaltDeploymentRepository=deploymentRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-releases/
-                """
-            }
-        }
-
-        /*stage('BUILDING OUR IMAGE') {
+                /*stage('PUBLISH RELEASE TO NEXUS') {
+                    steps {
+                          sh """
+                            mvn deploy -DaltDeploymentRepository=releaseRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-releases/ -Ptests
+                        """
+                    }
+                }*/
+        stage('BUILDING OUR IMAGE') {
             steps {
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
@@ -84,13 +79,26 @@ stage('REPORT METRICS') {
                 script {
                     // Example: Push a custom metric to Prometheus Pushgateway
                     sh """
-                        echo 'jenkins_builds_total{status="success"} 1' | curl --data-binary @- http://pushgateway:9091/metrics/job/jenkins
+                        echo 'jenkins_builds_total{status="success"} 1' | curl --data-binary @- http://promgateway:9091/metrics/job/jenkins
                     """
                 }
             }
         }
+         stage('VERIFY GRAFANA') {
+            steps {
+                echo 'Checking Grafana availability...'
+                script {
+                    def response = sh(script: "curl -o /dev/null -s -w \"%{http_code}\" http://grafana:10000", returnStdout: true).trim()
+                    if (response == '200') {
+                        echo 'Grafana is running and accessible on port 10000.'
+                    } else {
+                        error("Grafana is not accessible on port 10000. Response code: ${response}")
+                    }
+                }
+            }
+        }
         // Terraform stages
-/*stage('Terraform Init') {
+stage('Terraform Init') {
             steps {
                 dir('terraform') {
                     withCredentials([

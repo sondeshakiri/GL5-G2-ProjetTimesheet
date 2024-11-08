@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-service
+  labels:
+    app: mariadb
+spec:
+  type: ClusterIP  # Change to LoadBalancer if you need external access
+  ports:
+    - port: 3306        # Service port
+      targetPort: 3306  # Container port
+  selector:
+    app: mariadb        # This should match the labels in your MariaDB deployment

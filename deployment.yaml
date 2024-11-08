@@ -1,3 +1,4 @@
+# Timesheet Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,3 +20,17 @@ spec:
           image: msaidc/timesheet:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mariadb://mariadb-service:3306/timesheet2021?useSSL=false&allowPublicKeyRetrieval=true  # Update with your DB service
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "55307062"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
