@@ -56,14 +56,14 @@ pipeline {
             }
         }*/
 
-        /* Uncomment this stage if you want to publish releases*/
+        /* Uncomment this stage if you want to publish releases
         stage('PUBLISH RELEASE TO NEXUS') {
             steps {
                 sh """
                     mvn deploy -DaltDeploymentRepository=releaseRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-releases/ -Ptests
                 """
             }
-        }
+        }*/
 
 
         stage('BUILDING OUR IMAGE') {
@@ -182,9 +182,23 @@ pipeline {
                 sh '''
                     #!/bin/bash
                     set -e
+                    kubectl get nodes
+
+                    # Apply MariaDB Persistent Volume
+                    kubectl apply -f mariadb-pv.yaml
+
+                    # Apply MariaDB Persistent Volume Claim
+                    kubectl apply -f mariadb-pvc.yaml
+
+                    # Apply MariaDB Deployment
+                    kubectl apply -f mariadb-deployment.yaml
+
+                    # Apply MariaDB Service
+                    kubectl apply -f mariadb-service.yaml
+
+                    # Apply application Deployment and Service
 
                     # Apply Kubernetes configurations
-                    kubectl get nodes
                     kubectl apply -f service.yaml
                     kubectl apply -f deployment.yaml
                 '''

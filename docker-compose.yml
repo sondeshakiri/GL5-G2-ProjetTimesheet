@@ -41,7 +41,7 @@ services:
       dockerfile: Dockerfile
     container_name: angular_frontend
     ports:
-      - "4300:4200"
+      - "4300:80"
     networks:
       - timesheet_network
 
