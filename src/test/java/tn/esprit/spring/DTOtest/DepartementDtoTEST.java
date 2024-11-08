@@ -70,16 +70,10 @@ class DepartementDtoTEST {
         );
     }
 
-
     @Test
     void testGetId() {
-        // Créer une instance de DepartementDTO
-        DepartementDTO departementDTO = new DepartementDTO(1,"Marketing",null,null,null);
-
-        // Vérifier que la méthode getId() renvoie la bonne valeur
-        assertEquals(1, departementDTO.getId(), "The ID should be 1");
+        assertEquals(1, departementDTO.getId(), "Departement ID should be 1");
     }
-
 
     @Test
     void testSetId() {
