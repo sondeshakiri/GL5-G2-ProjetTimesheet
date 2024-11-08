@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: timesheet_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 55307062
+      MYSQL_DATABASE: timesheet2021
+      MYSQL_USER: Said
+      MYSQL_PASSWORD: 55307062
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - timesheet_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: timesheet_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timesheet2021?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: Said
+      SPRING_DATASOURCE_PASSWORD: 55307062
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      # Add this line
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    depends_on:
+      - mysql
+    ports:
+      - "8081:8081"
+    networks:
+      - timesheet_network
+
+  frontend:
+    build:
+      context: ../timesheet-frontend
+      dockerfile: Dockerfile
+    container_name: angular_frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - timesheet_network
+
+networks:
+  timesheet_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
