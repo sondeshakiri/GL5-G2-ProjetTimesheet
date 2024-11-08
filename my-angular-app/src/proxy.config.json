@@ -1,8 +1,0 @@
-{
-    "/SpringMVC/servlet": {
-      "target": "http://ab08390725c3b41389b40324ea311919-1962932689.us-east-1.elb.amazonaws.com:8085",
-      "secure": false,
-      "changeOrigin": true
-    }
-  }
-  
