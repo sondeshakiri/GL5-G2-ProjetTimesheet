@@ -12,7 +12,6 @@
 
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>timesheet2021</artifactId>
-	<version>${releaseVersion}</version>
 	<name>timesheet2021</name>
 	<description>timesheet2021</description>
 	<properties>
