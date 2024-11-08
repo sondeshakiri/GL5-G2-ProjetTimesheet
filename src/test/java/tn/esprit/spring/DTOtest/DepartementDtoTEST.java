@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import tn.esprit.spring.DTO.DepartementDTO;
 import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
+import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Mission;
 
 import java.util.Arrays;
@@ -104,10 +104,20 @@ class DepartementDtoTEST {
     }
 
     @Test
-    void testGetEmployeNames() {
+    void testGetEmployeNamesSize() {
         List<String> employeNames = departementDTO.getEmployeNames();
         assertEquals(2, employeNames.size(), "Employe list size should be 2");
+    }
+
+    @Test
+    void testGetEmployeNamesJohnDoe() {
+        List<String> employeNames = departementDTO.getEmployeNames();
         assertTrue(employeNames.contains("John Doe"), "Employe list should contain 'John Doe'");
+    }
+
+    @Test
+    void testGetEmployeNamesJaneSmith() {
+        List<String> employeNames = departementDTO.getEmployeNames();
         assertTrue(employeNames.contains("Jane Smith"), "Employe list should contain 'Jane Smith'");
     }
 
@@ -119,10 +129,20 @@ class DepartementDtoTEST {
     }
 
     @Test
-    void testGetMissionDescriptions() {
+    void testGetMissionDescriptionsSize() {
         List<String> missionDescriptions = departementDTO.getMissionDescriptions();
         assertEquals(2, missionDescriptions.size(), "Mission list size should be 2");
+    }
+
+    @Test
+    void testGetMissionDescriptionsFeature() {
+        List<String> missionDescriptions = departementDTO.getMissionDescriptions();
         assertTrue(missionDescriptions.contains("Develop new feature"), "Mission list should contain 'Develop new feature'");
+    }
+
+    @Test
+    void testGetMissionDescriptionsBugs() {
+        List<String> missionDescriptions = departementDTO.getMissionDescriptions();
         assertTrue(missionDescriptions.contains("Fix bugs"), "Mission list should contain 'Fix bugs'");
     }
 
@@ -150,13 +170,84 @@ class DepartementDtoTEST {
         );
 
         assertEquals(2, emptyDTO.getId(), "Departement ID should be 2");
+    }
+
+    @Test
+    void testEmptyDepartementDTOName() {
+        Departement emptyDepartement = mock(Departement.class);
+        when(emptyDepartement.getId()).thenReturn(2);
+        when(emptyDepartement.getName()).thenReturn("Empty Department");
+        when(emptyDepartement.getEmployes()).thenReturn(Collections.emptyList());
+        when(emptyDepartement.getMissions()).thenReturn(Collections.emptyList());
+
+        DepartementDTO emptyDTO = new DepartementDTO(
+                emptyDepartement.getId(),
+                emptyDepartement.getName(),
+                "Unknown",
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
+
         assertEquals("Empty Department", emptyDTO.getName(), "Departement name should be 'Empty Department'");
+    }
+
+    @Test
+    void testEmptyDepartementDTOEntrepriseName() {
+        Departement emptyDepartement = mock(Departement.class);
+        when(emptyDepartement.getId()).thenReturn(2);
+        when(emptyDepartement.getName()).thenReturn("Empty Department");
+        when(emptyDepartement.getEmployes()).thenReturn(Collections.emptyList());
+        when(emptyDepartement.getMissions()).thenReturn(Collections.emptyList());
+
+        DepartementDTO emptyDTO = new DepartementDTO(
+                emptyDepartement.getId(),
+                emptyDepartement.getName(),
+                "Unknown",
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
+
         assertEquals("Unknown", emptyDTO.getEntrepriseName(), "Entreprise name should be 'Unknown'");
+    }
+
+    @Test
+    void testEmptyDepartementDTOEmployeNames() {
+        Departement emptyDepartement = mock(Departement.class);
+        when(emptyDepartement.getId()).thenReturn(2);
+        when(emptyDepartement.getName()).thenReturn("Empty Department");
+        when(emptyDepartement.getEmployes()).thenReturn(Collections.emptyList());
+        when(emptyDepartement.getMissions()).thenReturn(Collections.emptyList());
+
+        DepartementDTO emptyDTO = new DepartementDTO(
+                emptyDepartement.getId(),
+                emptyDepartement.getName(),
+                "Unknown",
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
+
         assertTrue(emptyDTO.getEmployeNames().isEmpty(), "Employe names list should be empty");
+    }
+
+    @Test
+    void testEmptyDepartementDTOMissionDescriptions() {
+        Departement emptyDepartement = mock(Departement.class);
+        when(emptyDepartement.getId()).thenReturn(2);
+        when(emptyDepartement.getName()).thenReturn("Empty Department");
+        when(emptyDepartement.getEmployes()).thenReturn(Collections.emptyList());
+        when(emptyDepartement.getMissions()).thenReturn(Collections.emptyList());
+
+        DepartementDTO emptyDTO = new DepartementDTO(
+                emptyDepartement.getId(),
+                emptyDepartement.getName(),
+                "Unknown",
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
+
         assertTrue(emptyDTO.getMissionDescriptions().isEmpty(), "Mission descriptions list should be empty");
     }
 
-  
     @Test
     void testUpdatingListsWithDifferentSizes() {
         departementDTO.setEmployeNames(Arrays.asList("Alice Brown"));
