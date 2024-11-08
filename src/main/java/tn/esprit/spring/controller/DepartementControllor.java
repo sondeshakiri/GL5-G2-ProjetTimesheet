@@ -1,6 +1,7 @@
 package tn.esprit.spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.entities.Departement;
@@ -8,6 +9,7 @@ import tn.esprit.spring.services.DepartementService;
 
 import java.util.List;
 
+@CrossOrigin(origins ="*")
 @RestController
 @RequestMapping("/departements")
 public class DepartementControllor {
@@ -21,10 +23,17 @@ public class DepartementControllor {
         return departementService.findAll();
     }
 
-    // API pour obtenir un département par son ID
+ // API pour obtenir un département par son ID
     @GetMapping("/get/{id}")
     public ResponseEntity<Departement> getDepartementById(@PathVariable int id) {
         Departement departement = departementService.findById(id);
+        
+        // Vérifier si le département est nul et retourner 404 si c'est le cas
+        if (departement == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        
+        // Si le département est trouvé, retourner 200 OK avec l'objet
         return ResponseEntity.ok(departement);
     }
 

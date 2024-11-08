@@ -15,8 +15,6 @@ import tn.esprit.spring.services.DepartementService;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -162,7 +160,14 @@ public class DepartementControllorTest {
         }
     }
 
+    @Test
+    public void testDeleteDepartementWithNonexistentId() {
+        when(departementService.findById(99)).thenReturn(null);
 
-  
+        Departement result = departementController.getDepartementById(99).getBody();
+        assertNull(result); // Le département n'existe pas, il doit être nul
+    }
+
+
     
 }
