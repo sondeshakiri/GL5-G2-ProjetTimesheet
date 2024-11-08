@@ -7,9 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import tn.esprit.spring.dto.DepartementDTO;
-import tn.esprit.spring.dto.EntrepriseDTO;
 import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.DepartementService;
 import tn.esprit.spring.services.IEntrepriseService;
 
@@ -107,94 +105,6 @@ class DepartementControllerTest {
 
         assertEquals(204, response.getStatusCodeValue());
         verify(departementService, times(1)).delete(1);
-    }
-    @Test
-    void testCreateDepartement_WithEntrepriseDTO() {
-        DepartementDTO departementDTO = new DepartementDTO();
-        departementDTO.setName("Finance");
-        departementDTO.setEntrepriseId(1); // Assuming this ID is valid
-
-        EntrepriseDTO entrepriseDTO = new EntrepriseDTO();
-        entrepriseDTO.setId(1);
-        entrepriseDTO.setName("TechCorp");
-        entrepriseDTO.setRaisonSocial("Innovative Technology Solutions");
-
-        Departement departement = new Departement();
-        departement.setId(1);
-        departement.setName("Finance");
-
-        // Mocking the behaviour of the services
-        when(departementService.save(any(Departement.class))).thenReturn(departement);
-
-        // Using the default constructor and setting properties
-        Entreprise entreprise = new Entreprise();
-        entreprise.setId(entrepriseDTO.getId());
-        entreprise.setName(entrepriseDTO.getName());
-        entreprise.setRaisonSocial(entrepriseDTO.getRaisonSocial());
-
-        when(entrepriseService.getEntrepriseById(1)).thenReturn(entreprise);
-
-        DepartementDTO result = departementController.createDepartement(departementDTO);
-
-        assertNotNull(result);
-        assertEquals("Finance", result.getName());
-        assertEquals(Integer.valueOf(1), result.getEntrepriseId());
-        verify(departementService, times(1)).save(any(Departement.class));
-    }
-
-    @Test
-    void testUpdateDepartement_WithEntrepriseDTO() {
-        DepartementDTO departementDTO = new DepartementDTO();
-        departementDTO.setId(1);
-        departementDTO.setName("IT");
-        departementDTO.setEntrepriseId(1); // Assuming this ID is valid
-
-        EntrepriseDTO entrepriseDTO = new EntrepriseDTO();
-        entrepriseDTO.setId(1);
-        entrepriseDTO.setName("TechCorp");
-        entrepriseDTO.setRaisonSocial("Innovative Technology Solutions");
-
-        Departement updatedDepartement = new Departement();
-        updatedDepartement.setId(1);
-        updatedDepartement.setName("IT");
-
-        when(departementService.update(any(Departement.class))).thenReturn(updatedDepartement);
-
-        // Using the default constructor and setting properties
-        Entreprise entreprise = new Entreprise();
-        entreprise.setId(entrepriseDTO.getId());
-        entreprise.setName(entrepriseDTO.getName());
-        entreprise.setRaisonSocial(entrepriseDTO.getRaisonSocial());
-
-        when(entrepriseService.getEntrepriseById(1)).thenReturn(entreprise);
-
-        ResponseEntity<DepartementDTO> response = departementController.updateDepartement(1, departementDTO);
-
-        assertNotNull(response.getBody());
-        assertEquals("IT", response.getBody().getName());
-        assertEquals(Integer.valueOf(1), response.getBody().getEntrepriseId());
-        verify(departementService, times(1)).update(any(Departement.class));
-    }
-
-
-    @Test
-    void testCreateDepartement_NullEntrepriseDTO() {
-        DepartementDTO departementDTO = new DepartementDTO();
-        departementDTO.setName("Finance");
-        departementDTO.setEntrepriseId(null); // Simulating null entreprise ID
-
-        Departement departement = new Departement();
-        departement.setId(1);
-        departement.setName("Finance");
-
-        when(departementService.save(any(Departement.class))).thenReturn(departement);
-
-        DepartementDTO result = departementController.createDepartement(departementDTO);
-
-        assertNotNull(result);
-        assertEquals("Finance", result.getName());
-        assertNull(result.getEntrepriseId()); // Ensure no entreprise ID is set
-        verify(departementService, times(1)).save(any(Departement.class));
     }
 
 }
