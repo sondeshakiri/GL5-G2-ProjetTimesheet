@@ -177,7 +177,7 @@ pipeline {
         }
 
         // Apply Kubernetes Deployment and Service
- stage('Apply PV and PVC') {
+/* stage('Apply PV and PVC') {
             steps {
                 script {
                     // Apply Persistent Volume (PV)
@@ -193,21 +193,20 @@ pipeline {
                     //sh 'kubectl wait --for=condition=Bound pvc/mariadb-pvc --timeout=600s'
                 }
             }
-        }
+        }*/
 
-        /*stage('Apply MariaDB Deployment') {
+        stage('Apply MariaDB Deployment') {
             steps {
                 script {
                     // Apply MariaDB Deployment
                     sh 'kubectl apply -f mariadb-deployment.yaml'
 
                     // Wait for MariaDB pod to be running
-                    sh 'kubectl wait --for=condition=ready pod -l app=mariadb --timeout=600s'
                 }
             }
         }
 
-        stage('Apply App Deployment') {
+        /*stage('Apply App Deployment') {
             steps {
                 script {
                     // Apply Application Deployment
