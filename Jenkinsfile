@@ -212,7 +212,8 @@ pipeline {
                     sh 'kubectl apply -f deployment.yaml'
 
                     // Wait for application pod to be running
-                    sh 'kubectl wait --for=condition=ready pod -l app=timesheet --timeout=600s'
+                     sh 'kubectl apply -f service.yaml'
+
                 }
             }
         }
