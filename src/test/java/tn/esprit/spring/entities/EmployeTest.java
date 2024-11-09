@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import tn.esprit.spring.services.EmployeServiceImpl;
@@ -27,20 +26,14 @@ class EmployeTest {
     @Mock
     private EmployeRepository employeRepository; // Mock any dependencies
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this); // Initialize mocks
-    }
-
     @Test
     void testCreateEmploye() {
-
         Role role = Role.valueOf("ADMINISTRATEUR");
         Employe employe = new Employe("Doe", "John", "john.doe@example.com", true, role);
 
         when(employeRepository.save(employe)).thenReturn(employe);
 
-        // This calls the repository (the mock)
+        // Call the service method, which uses the mock repository
         int result = employeService.addOrUpdateEmploye(employe);
 
         assertEquals(employe.getId(), result);
@@ -48,13 +41,12 @@ class EmployeTest {
 
     @Test
     void testGetEmployePrenomById() {
-
         int employeId = 1;
         Employe employe = new Employe("Doe", "John", "john.doe@example.com", true, Role.valueOf("ADMINISTRATEUR"));
 
         when(employeRepository.findById(employeId)).thenReturn(Optional.of(employe));
 
-        // This calls the repository (mock)
+        // Call the service method, which uses the mock repository
         String result = employeService.getEmployePrenomById(employeId);
 
         assertNotNull(result);
@@ -63,14 +55,13 @@ class EmployeTest {
 
     @Test
     void testUpdateEmploye() {
-
         Role role = Role.valueOf("ADMINISTRATEUR");
         Employe employe = new Employe("Doe", "John", "john.doe@example.com", true, role);
 
         employe.setEmail("john.new@example.com");
         when(employeRepository.save(employe)).thenReturn(employe);
 
-        // This calls the repository (mock)
+        // Call the service method, which uses the mock repository
         employeService.addOrUpdateEmploye(employe);
 
         assertEquals("john.new@example.com", employe.getEmail());
@@ -78,13 +69,11 @@ class EmployeTest {
 
     @Test
     void testDeleteEmployeById() {
-        // Given
         int employeId = 1;
         Role role = Role.valueOf("ADMINISTRATEUR");
         Employe employe = new Employe("Doe", "John", "john.doe@example.com", true, role);
         employe.setId(employeId);
 
-        // Initialize the Departement with an empty list
         Departement departement = new Departement();
         departement.setEmployes(new ArrayList<>());
         employe.setDepartements(List.of(departement));
@@ -95,6 +84,4 @@ class EmployeTest {
 
         verify(employeRepository, times(1)).delete(employe);
     }
-
-
 }
