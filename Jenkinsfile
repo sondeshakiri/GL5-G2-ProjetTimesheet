@@ -181,21 +181,21 @@ pipeline {
             steps {
                 script {
                     // Apply Persistent Volume (PV)
-                    sh 'kubectl apply -f mariadb-pv.yaml'
+                    /*sh 'kubectl apply -f mariadb-pv.yaml'
 
                     // Wait for PV to become available
-                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'
+                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'*/
 
                     // Apply Persistent Volume Claim (PVC)
                     sh 'kubectl apply -f mariadb-pvc.yaml'
 
                     // Wait for PVC to be bound
-                    sh 'kubectl wait --for=condition=Bound pvc/mariadb-pvc --timeout=600s'
+                    //sh 'kubectl wait --for=condition=Bound pvc/mariadb-pvc --timeout=600s'
                 }
             }
         }
 
-        stage('Apply MariaDB Deployment') {
+        /*stage('Apply MariaDB Deployment') {
             steps {
                 script {
                     // Apply MariaDB Deployment
@@ -218,7 +218,7 @@ pipeline {
                 }
             }
         }
-    }
+    }*/
 
 
     post {
