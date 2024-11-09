@@ -98,7 +98,7 @@ pipeline {
 
 
         // Terraform stages
-        stage('Terraform Init') {
+        /*stage('Terraform Init') {
             steps {
                 dir('terraform') {
                     withCredentials([
