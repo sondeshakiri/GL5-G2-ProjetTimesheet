@@ -132,7 +132,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply') {
+       /* stage('Terraform Apply') {
             steps {
                 dir('terraform') {
                     withCredentials([
@@ -147,7 +147,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Configure AWS CLI') {
             steps {
@@ -177,48 +177,49 @@ pipeline {
         }
 
         // Apply Kubernetes Deployment and Service
-                stage('Apply PV and PVC') {
-                    steps {
-                        script {
-                            // Apply Persistent Volume (PV)
-                            sh 'kubectl apply -f mariadb-pv.yaml'
+ stage('Apply PV and PVC') {
+            steps {
+                script {
+                    // Apply Persistent Volume (PV)
+                    sh 'kubectl apply -f mariadb-pv.yaml'
 
-                            // Wait until the PV is created
-                            waitForResource("pv", "mariadb-pv", "Available")
+                    // Wait for PV to become available
+                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'
 
-                            // Apply Persistent Volume Claim (PVC)
-                            sh 'kubectl apply -f mariadb-pvc.yaml'
+                    // Apply Persistent Volume Claim (PVC)
+                    sh 'kubectl apply -f mariadb-pvc.yaml'
 
-                            // Wait until the PVC is bound
-                            waitForResource("pvc", "mariadb-pvc", "Bound")
-                        }
-                    }
-                }
-
-                stage('Apply MariaDB Deployment') {
-                    steps {
-                        script {
-                            // Apply MariaDB Deployment
-                            sh 'kubectl apply -f mariadb-deployment.yaml'
-
-                            // Wait until the MariaDB pod is running
-                            waitForResource("pod", "mariadb-deployment", "Running")
-                        }
-                    }
-                }
-
-                stage('Apply App Deployment') {
-                    steps {
-                        script {
-                            // Apply Application Deployment
-                            sh 'kubectl apply -f deployment.yaml'
-
-                            // Wait until the application pod is running
-                            waitForResource("pod", "timesheet-deployment", "Running")
-                        }
-                    }
+                    // Wait for PVC to be bound
+                    sh 'kubectl wait --for=condition=Bound pvc/mariadb-pvc --timeout=600s'
                 }
             }
+        }
+
+        stage('Apply MariaDB Deployment') {
+            steps {
+                script {
+                    // Apply MariaDB Deployment
+                    sh 'kubectl apply -f mariadb-deployment.yaml'
+
+                    // Wait for MariaDB pod to be running
+                    sh 'kubectl wait --for=condition=ready pod -l app=mariadb --timeout=600s'
+                }
+            }
+        }
+
+        stage('Apply App Deployment') {
+            steps {
+                script {
+                    // Apply Application Deployment
+                    sh 'kubectl apply -f deployment.yaml'
+
+                    // Wait for application pod to be running
+                    sh 'kubectl wait --for=condition=ready pod -l app=timesheet --timeout=600s'
+                }
+            }
+        }
+    }
+
 
     post {
         success {
