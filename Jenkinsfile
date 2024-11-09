@@ -177,34 +177,48 @@ pipeline {
         }
 
         // Apply Kubernetes Deployment and Service
-        stage('Apply Kubernetes Deployment and Service') {
-            steps {
-                sh '''
-                    #!/bin/bash
-                    set -e
-                    kubectl get nodes
+                stage('Apply PV and PVC') {
+                    steps {
+                        script {
+                            // Apply Persistent Volume (PV)
+                            sh 'kubectl apply -f mariadb-pv.yaml'
 
-                    # Apply MariaDB Persistent Volume
-                    kubectl apply -f mariadb-pv.yaml
+                            // Wait until the PV is created
+                            waitForResource("pv", "mariadb-pv", "Available")
 
-                    # Apply MariaDB Persistent Volume Claim
-                    kubectl apply -f mariadb-pvc.yaml
+                            // Apply Persistent Volume Claim (PVC)
+                            sh 'kubectl apply -f mariadb-pvc.yaml'
 
-                    # Apply MariaDB Deployment
-                    kubectl apply -f mariadb-deployment.yaml
+                            // Wait until the PVC is bound
+                            waitForResource("pvc", "mariadb-pvc", "Bound")
+                        }
+                    }
+                }
 
-                    # Apply MariaDB Service
-                    kubectl apply -f mariadb-service.yaml
+                stage('Apply MariaDB Deployment') {
+                    steps {
+                        script {
+                            // Apply MariaDB Deployment
+                            sh 'kubectl apply -f mariadb-deployment.yaml'
 
-                    # Apply application Deployment and Service
+                            // Wait until the MariaDB pod is running
+                            waitForResource("pod", "mariadb-deployment", "Running")
+                        }
+                    }
+                }
 
-                    # Apply Kubernetes configurations
-                    kubectl apply -f service.yaml
-                    kubectl apply -f deployment.yaml
-                '''
+                stage('Apply App Deployment') {
+                    steps {
+                        script {
+                            // Apply Application Deployment
+                            sh 'kubectl apply -f deployment.yaml'
+
+                            // Wait until the application pod is running
+                            waitForResource("pod", "timesheet-deployment", "Running")
+                        }
+                    }
+                }
             }
-        }
-    }
 
     post {
         success {
