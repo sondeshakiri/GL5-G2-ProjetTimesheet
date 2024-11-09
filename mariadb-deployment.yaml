@@ -25,6 +25,6 @@ spec:
             - name: MYSQL_DATABASE
               value: "timesheet2021"
             - name: MYSQL_USER
-              value: "root"
+              value: "said"
             - name: MYSQL_PASSWORD
               value: "55307062"

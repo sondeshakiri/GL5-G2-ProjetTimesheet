@@ -24,7 +24,7 @@ spec:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mariadb://mariadb-service:3306/timesheet2021?useSSL=false&allowPublicKeyRetrieval=true  # Update with your DB service
             - name: SPRING_DATASOURCE_USERNAME
-              value: root
+              value: said
             - name: SPRING_DATASOURCE_PASSWORD
               value: "55307062"
           resources:
