@@ -177,14 +177,14 @@ pipeline {
         }
 
         // Apply Kubernetes Deployment and Service
-/* stage('Apply PV and PVC') {
+/*stage('Apply PV and PVC') {
             steps {
                 script {
                     // Apply Persistent Volume (PV)
                     /*sh 'kubectl apply -f mariadb-pv.yaml'
 
                     // Wait for PV to become available
-                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'*/
+                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'
 
                     // Apply Persistent Volume Claim (PVC)
                     sh 'kubectl apply -f mariadb-pvc.yaml'
@@ -194,7 +194,6 @@ pipeline {
                 }
             }
         }*/
-
         stage('Apply MariaDB Deployment') {
             steps {
                 script {
