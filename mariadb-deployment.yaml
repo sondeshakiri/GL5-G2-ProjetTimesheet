@@ -28,10 +28,3 @@ spec:
               value: "root"
             - name: MYSQL_PASSWORD
               value: "55307062"
-          volumeMounts:
-            - name: mariadb-storage
-              mountPath: /var/lib/mysql  # Default data directory for MariaDB
-      volumes:
-        - name: mariadb-storage
-          persistentVolumeClaim:
-            claimName: mariadb-pvc  # Reference the PVC here
