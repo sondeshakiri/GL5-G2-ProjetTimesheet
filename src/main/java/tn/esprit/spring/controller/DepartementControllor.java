@@ -56,7 +56,7 @@ public class DepartementControllor {
         return ResponseEntity.ok(convertToDTO(updatedDepartement));
     }
 
-    // API to delete a department by ID
+    // //API to delete a department by ID
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDepartement(@PathVariable int id) {
         departementService.delete(id);
