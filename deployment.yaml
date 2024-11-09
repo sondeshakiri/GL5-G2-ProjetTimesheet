@@ -1,4 +1,3 @@
-# Timesheet Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,7 +5,7 @@ metadata:
   labels:
     app: timesheet
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: timesheet
@@ -16,13 +15,33 @@ spec:
         app: timesheet
     spec:
       containers:
+        - name: mariadb-container
+          image: mariadb:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "55307062"
+            - name: MYSQL_DATABASE
+              value: "timesheet2021"
+            - name: MYSQL_USER
+              value: "said"
+            - name: MYSQL_PASSWORD
+              value: "55307062"
+          ports:
+            - containerPort: 3306
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
         - name: timesheet-container
           image: msaidc/timesheet:latest
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mariadb://mariadb-service:3306/timesheet2021?useSSL=false&allowPublicKeyRetrieval=true  # Update with your DB service
+              value: jdbc:mariadb://localhost:3306/timesheet2021?useSSL=false&allowPublicKeyRetrieval=true
             - name: SPRING_DATASOURCE_USERNAME
               value: said
             - name: SPRING_DATASOURCE_PASSWORD
