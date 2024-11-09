@@ -194,7 +194,7 @@ pipeline {
                 }
             }
         }*/
-        stage('Apply MariaDB Deployment') {
+        /*stage('Apply MariaDB Deployment') {
             steps {
                 script {
                     // Apply MariaDB Deployment
@@ -203,9 +203,9 @@ pipeline {
                     // Wait for MariaDB pod to be running
                 }
             }
-        }
+        }*/
 
-        /*stage('Apply App Deployment') {
+        stage('Apply App Deployment') {
             steps {
                 script {
                     // Apply Application Deployment
@@ -215,7 +215,7 @@ pipeline {
                     sh 'kubectl wait --for=condition=ready pod -l app=timesheet --timeout=600s'
                 }
             }
-        }*/
+        }
     }
 
 
