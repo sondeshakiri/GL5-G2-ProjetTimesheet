@@ -40,7 +40,7 @@ pipeline {
                 sh 'mvn clean verify -Ptests'
             }
         }
-    /*stage('MVN SONARQUBE'){
+    stage('MVN SONARQUBE'){
                 steps {
                     sh 'mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=admin -Dsonar.password="Admin55307062."'
 
@@ -54,7 +54,7 @@ pipeline {
                     mvn deploy -DaltDeploymentRepository=snapshotRepo::default::http://admin:55307062Said@nexus:8081/repository/maven-snapshots/ -Ptests
                 """
             }
-        }*/
+        }
 
         /* Uncomment this stage if you want to publish releases
         stage('PUBLISH RELEASE TO NEXUS') {
@@ -85,7 +85,7 @@ pipeline {
             }
         }
 
-        /*stage('REPORT METRICS') {
+        stage('REPORT METRICS') {
             steps {
                 script {
                     // Example: Push a custom metric to Prometheus Pushgateway
@@ -94,11 +94,11 @@ pipeline {
                     """
                 }
             }
-        }*/
+        }
 
 
         // Terraform stages
-        /*stage('Terraform Init') {
+        stage('Terraform Init') {
             steps {
                 dir('terraform') {
                     withCredentials([
@@ -132,7 +132,7 @@ pipeline {
             }
         }
 
-       /* stage('Terraform Apply') {
+        stage('Terraform Apply') {
             steps {
                 dir('terraform') {
                     withCredentials([
@@ -147,7 +147,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         stage('Configure AWS CLI') {
             steps {
@@ -177,24 +177,8 @@ pipeline {
         }
 
         // Apply Kubernetes Deployment and Service
-/*stage('Apply PV and PVC') {
-            steps {
-                script {
-                    // Apply Persistent Volume (PV)
-                    /*sh 'kubectl apply -f mariadb-pv.yaml'
 
-                    // Wait for PV to become available
-                    sh 'kubectl wait --for=condition=Available pv/mariadb-pv --timeout=600s'
-
-                    // Apply Persistent Volume Claim (PVC)
-                    sh 'kubectl apply -f mariadb-pvc.yaml'
-
-                    // Wait for PVC to be bound
-                    //sh 'kubectl wait --for=condition=Bound pvc/mariadb-pvc --timeout=600s'
-                }
-            }
-        }*/
-        /*stage('Apply MariaDB Deployment') {
+        stage('Apply MariaDB Deployment') {
             steps {
                 script {
                     // Apply MariaDB Deployment
@@ -203,7 +187,7 @@ pipeline {
                     // Wait for MariaDB pod to be running
                 }
             }
-        }*/
+        }
 
         stage('Apply App Deployment') {
             steps {
