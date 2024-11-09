@@ -217,8 +217,8 @@ pipeline {
                     sh 'kubectl wait --for=condition=ready pod -l app=timesheet --timeout=600s'
                 }
             }
-        }
-    }*/
+        }*/
+    }
 
 
     post {
